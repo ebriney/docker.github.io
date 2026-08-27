@@ -29,11 +29,8 @@ see [Integrating Docker Scout with other systems](/manuals/scout/integrations/_i
 
 ## Activate Docker Scout on a repository
 
-Docker Personal comes with 1 Scout-enabled repository. You can upgrade your
-Docker subscription if you need additional repositories.
-See [Subscriptions and features](../../subscription/details.md)
-to learn how many Scout-enabled
-repositories come with each subscription tier.
+See [Subscriptions and features](https://www.docker.com/pricing?ref=Docs&refAction=DocsScoutAnalysis)
+to learn how many Scout-enabled repositories come with each subscription tier.
 
 Before you can activate image analysis on a repository in a third-party registry,
 the registry must be integrated with Docker Scout for your Docker organization.
@@ -183,8 +180,8 @@ $ docker scout cves --format only-packages --only-vuln-packages \
 For more information about these commands and how to use them, refer to the CLI
 reference documentation:
 
-- [`docker scout quickview`](/reference/cli/docker/scout/quickview.md)
-- [`docker scout cves`](/reference/cli/docker/scout/cves.md)
+- [`docker scout quickview`](/reference/cli/docker/scout/quickview/)
+- [`docker scout cves`](/reference/cli/docker/scout/cves/)
 
 ## Vulnerability severity assessment
 
@@ -208,9 +205,10 @@ categorized as **Unspecified** (U).
 
 Docker Scout doesn't implement a proprietary vulnerability metrics system. All
 metrics are inherited from security advisories that Docker Scout integrates
-with. Advisories may use different thresholds for classifying vulnerabilities,
-but most of them adhere to the CVSS v3.0 specification, which maps CVSS scores
-to severity ratings according to the following table:
+with. Advisories may use different thresholds for classifying vulnerabilities.
+When the selected advisory source provides both CVSS v4 and v3 data, Docker
+Scout prefers CVSS v4. The qualitative severity ratings defined by CVSS v3.x
+and v4.0 use the same score ranges:
 
 | CVSS score | Severity rating  |
 | ---------- | ---------------- |
@@ -229,10 +227,7 @@ rating system.
 
 Image analysis on the Docker Scout platform, and analysis triggered by background
 indexing in Docker Desktop, has an image file size limit of 10 GB (uncompressed).
-To analyze images larger than that, you can either:
+To analyze images larger than that:
 
-- Attach [SBOM attestations](/manuals/build/metadata/attestations/sbom.md) at build-time
-- Use the [CLI](#cli) to analyze the image locally
-
-Images analyzed locally with the CLI and images with SBOM attestations
-have no maximum file size.
+- Attach an [SBOM attestation](/manuals/build/metadata/attestations/sbom.md) at build-time. When an image includes an SBOM attestation, Docker Scout uses it instead of generating one, so the 10 GB limit doesn’t apply.
+- Alternatively, you can use the [CLI](#cli) to analyze the image locally. The 10 GB limit doesn’t apply when using the CLI. If the image includes an SBOM attestation, the CLI uses it to complete the analysis faster.

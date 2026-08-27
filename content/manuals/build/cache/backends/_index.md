@@ -25,7 +25,7 @@ Other cache backends require you to select a different [driver](/manuals/build/b
 >
 > If you use secrets or credentials inside your build process, ensure you
 > manipulate them using the dedicated
-> [`--secret` option](/reference/cli/docker/buildx/build.md#secret).
+> [`--secret` option](/reference/cli/docker/buildx/build/#secret).
 > Manually managing secrets using `COPY` or `ARG` could result in leaked
 > credentials.
 
@@ -56,9 +56,9 @@ Buildx supports the following cache storage backends:
 ## Command syntax
 
 To use any of the cache backends, you first need to specify it on build with the
-[`--cache-to` option](/reference/cli/docker/buildx/build.md#cache-to)
+[`--cache-to` option](/reference/cli/docker/buildx/build/#cache-to)
 to export the cache to your storage backend of choice. Then, use the
-[`--cache-from` option](/reference/cli/docker/buildx/build.md#cache-from)
+[`--cache-from` option](/reference/cli/docker/buildx/build/#cache-from)
 to import the cache from the storage backend into the current build. Unlike the
 local BuildKit cache (which is always enabled), all of the cache storage
 backends must be explicitly exported to, and explicitly imported from.
@@ -81,12 +81,11 @@ $ docker buildx build --push -t <registry>/<image> \
 
 ## Multiple caches
 
-BuildKit currently only supports
-[a single cache exporter](https://github.com/moby/buildkit/pull/3024). But you
-can import from as many remote caches as you like. For example, a common pattern
-is to use the cache of both the current branch and the main branch. The
-following example shows importing cache from multiple locations using the
-registry cache backend:
+BuildKit supports multiple cache exporters, allowing you to push cache to more 
+than one destination. You can also import from as many remote caches as you'd 
+like. For example, a common pattern is to use the cache of both the current 
+branch and the main branch. The following example shows importing cache from 
+multiple locations using the registry cache backend:
 
 ```console
 $ docker buildx build --push -t <registry>/<image> \
@@ -180,3 +179,6 @@ $ docker buildx build --push -t <registry>/<image> \
   --cache-to type=registry,ref=<registry>/<cache-image>,oci-mediatypes=true,image-manifest=true \
   --cache-from type=registry,ref=<registry>/<cache-image> .
 ```
+
+> [!NOTE]
+> Since BuildKit v0.21, `image-manifest` is enabled by default.

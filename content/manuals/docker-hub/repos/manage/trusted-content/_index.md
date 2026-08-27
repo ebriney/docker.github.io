@@ -3,6 +3,8 @@ description: Learn how to manage and contribute to trusted content.
 keywords: Docker Hub, Hub, trusted content
 title: Trusted content
 weight: 100
+aliases:
+ - /trusted-content/
 ---
 
 Docker's trusted content programs ensure that container images meet the highest
@@ -28,3 +30,7 @@ In this section, learn about:
 - [Insights and analytics](./insights-analytics.md): Access detailed metrics on
   image and extension usage, including pull counts, geolocation, and client
   data, to understand user behavior and optimize your content.
+
+For Docker Hardened Images guidance, including how to contribute, see
+[Contribute to the catalog](/dhi/how-to/build/#contribute-to-the-catalog) in the
+dedicated DHI docs section.

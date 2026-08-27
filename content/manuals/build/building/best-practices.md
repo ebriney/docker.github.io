@@ -1,7 +1,7 @@
 ---
 title: Building best practices
 linkTitle: Best practices
-weight: 60
+weight: 70
 description: Hints, tips and guidelines for writing clean, reliable Dockerfiles
 keywords: base images, dockerfile, best practices, hub, official image
 tags: [Best practices]
@@ -45,17 +45,17 @@ The first step towards achieving a secure image is to choose the right base
 image. When choosing an image, ensure it's built from a trusted source and keep
 it small.
 
-- [Docker Official Images](https://hub.docker.com/search?image_filter=official)
-  are some of the most secure and dependable images on Docker Hub. Typically,
-  Docker Official images have few or no packages containing CVEs, and are
-  thoroughly reviewed by Docker and project maintainers.
+- [Docker Official Images](https://hub.docker.com/search?badges=official)
+  are a curated collection that have clear documentation, promote best
+  practices, and are regularly updated. They provide a trusted starting point
+  for many applications.
 
-- [Verified Publisher](https://hub.docker.com/search?image_filter=store) images
+- [Verified Publisher](https://hub.docker.com/search?badges=verified_publisher) images
   are high-quality images published and maintained by the organizations
   partnering with Docker, with Docker verifying the authenticity of the content
   in their repositories.
 
-- [Docker-Sponsored Open Source](https://hub.docker.com/search?image_filter=open_source)
+- [Docker-Sponsored Open Source](https://hub.docker.com/search?badges=open_source)
   are published and maintained by open source projects sponsored by Docker
   through an [open source program](../../docker-hub/image-library/trusted-content.md#docker-sponsored-open-source-software-images).
 
@@ -77,28 +77,51 @@ dependencies can considerably lower the attack surface.
 
 ## Rebuild your images often
 
-Docker images are immutable. Building an image is taking a snapshot of that
-image at that moment. That includes any base images, libraries, or other
-software you use in your build. To keep your images up-to-date and secure, make
-sure to rebuild your image often, with updated dependencies.
+Docker images are immutable. Building an image is taking a snapshot of
+that image at that moment. That includes any base images, libraries, or
+other software you use in your build. To keep your images up-to-date and
+secure, rebuild your images regularly with updated dependencies.
 
-To ensure that you're getting the latest versions of dependencies in your build,
-you can use the `--no-cache` option to avoid cache hits.
+### Use --pull to get fresh base images
 
-```console
-$ docker build --no-cache -t my-image:my-tag .
-```
-
-The following Dockerfile uses the `24.04` tag of the `ubuntu` image. Over time,
-that tag may resolve to a different underlying version of the `ubuntu` image,
-as the publisher rebuilds the image with new security patches and updated
-libraries. Using the `--no-cache`, you can avoid cache hits and ensure a fresh
-download of base images and dependencies.
+The following Dockerfile uses the `24.04` tag of the `ubuntu` image.
+Over time, that tag may resolve to a different underlying version of the
+`ubuntu` image, as the publisher rebuilds the image with new security
+patches and updated libraries.
 
 ```dockerfile
 # syntax=docker/dockerfile:1
 FROM ubuntu:24.04
 RUN apt-get -y update && apt-get install -y --no-install-recommends python3
+```
+
+To get the latest version of the base image, use the `--pull` flag:
+
+```console
+$ docker build --pull -t my-image:my-tag .
+```
+
+The `--pull` flag forces Docker to check for and download a newer
+version of the base image, even if you have a version cached locally.
+
+### Use --no-cache for clean builds
+
+The `--no-cache` flag disables the build cache, forcing Docker to
+rebuild all layers from scratch:
+
+```console
+$ docker build --no-cache -t my-image:my-tag .
+```
+
+This gets the latest available versions of dependencies from package
+managers like `apt-get` or `npm`. It does not pull a fresh base image —
+for that, use `--pull`.
+
+The two flags serve distinct purposes and can be combined. Use both
+together to get a fresh base image and re-execute all build steps:
+
+```console
+$ docker build --pull --no-cache -t my-image:my-tag .
 ```
 
 Also consider [pinning base image versions](#pin-base-image-versions).
@@ -147,7 +170,7 @@ Limiting each container to one process is a good rule of thumb, but it's not a
 hard and fast rule. For example, not only can containers be
 [spawned with an init process](/manuals/engine/containers/multi-service_container.md),
 some programs might spawn additional processes of their own accord. For
-instance, [Celery](https://docs.celeryproject.org/) can spawn multiple worker
+instance, [Celery](https://docs.celeryq.dev/) can spawn multiple worker
 processes, and [Apache](https://httpd.apache.org/) can create one process per
 request.
 
@@ -192,17 +215,17 @@ image. This is useful because it lets publishers update tags to point to
 newer versions of an image. And as an image consumer, it means you
 automatically get the new version when you re-build your image.
 
-For example, if you specify `FROM alpine:3.19` in your Dockerfile, `3.19`
-resolves to the latest patch version for `3.19`.
+For example, if you specify `FROM alpine:3.21` in your Dockerfile, `3.21`
+resolves to the latest patch version for `3.21`.
 
 ```dockerfile
 # syntax=docker/dockerfile:1
-FROM alpine:3.19
+FROM alpine:3.21
 ```
 
-At one point in time, the `3.19` tag might point to version 3.19.1 of the
+At one point in time, the `3.21` tag might point to version 3.21.1 of the
 image. If you rebuild the image 3 months later, the same tag might point to a
-different version, such as 3.19.4. This publishing workflow is best practice,
+different version, such as 3.21.4. This publishing workflow is best practice,
 and most publishers use this tagging strategy, but it isn't enforced.
 
 The downside with this is that you're not guaranteed to get the same for every
@@ -213,16 +236,16 @@ To fully secure your supply chain integrity, you can pin the image version to a
 specific digest. By pinning your images to a digest, you're guaranteed to
 always use the same image version, even if a publisher replaces the tag with a
 new image. For example, the following Dockerfile pins the Alpine image to the
-same tag as earlier, `3.19`, but this time with a digest reference as well.
+same tag as earlier, `3.21`, but this time with a digest reference as well.
 
 ```dockerfile
 # syntax=docker/dockerfile:1
-FROM alpine:3.19@sha256:13b7e62e8df80264dbb747995705a986aa530415763a6c58f84a3ca8af9a5bcd
+FROM alpine:3.21@sha256:a8560b36e8b8210634f77d9f7f9efd7ffa463e380b75e2e74aff4511df3ef88c
 ```
 
-With this Dockerfile, even if the publisher updates the `3.19` tag, your builds
+With this Dockerfile, even if the publisher updates the `3.21` tag, your builds
 would still use the pinned image version:
-`13b7e62e8df80264dbb747995705a986aa530415763a6c58f84a3ca8af9a5bcd`.
+`a8560b36e8b8210634f77d9f7f9efd7ffa463e380b75e2e74aff4511df3ef88c`.
 
 While this helps you avoid unexpected changes, it's also more tedious to have
 to look up and include the image digest for base image versions manually each
@@ -244,7 +267,7 @@ changes the version automatically, because you're in control and you have an
 audit trail of when and how the change occurred.
 
 For more information about automatically updating your base images with Docker
-Scout, see [Remediation](/manuals/scout/policy/remediation.md).
+Scout, see [Remediation](/manuals/scout/policy/dashboard.md).
 
 ## Build and test your images in CI
 
@@ -257,11 +280,16 @@ automatically build and tag a Docker image and test it.
 Follow these recommendations on how to properly use the [Dockerfile instructions](/reference/dockerfile.md)
 to create an efficient and maintainable Dockerfile.
 
+> [!TIP]
+>
+> To improve linting, code navigation, and vulnerability scanning of your Dockerfiles in Visual Studio Code
+> see the [Docker DX](https://marketplace.visualstudio.com/items?itemName=docker.docker) extension.
+
 ### FROM
 
 Whenever possible, use current official images as the basis for your
 images. Docker recommends the [Alpine image](https://hub.docker.com/_/alpine/) as it
-is tightly controlled and small in size (currently under 6 MB), while still
+is tightly controlled and small in size (under 6 MB), while still
 being a full Linux distribution.
 
 For more information about the `FROM` instruction, see [Dockerfile reference for the FROM instruction](/reference/dockerfile.md#from).
@@ -437,7 +465,7 @@ reduces the image size, since the apt cache isn't stored in a layer. Since the
 `RUN` statement starts with `apt-get update`, the package cache is always
 refreshed prior to `apt-get install`.
 
-Official Debian and Ubuntu images [automatically run `apt-get clean`](https://github.com/moby/moby/blob/03e2923e42446dbb830c654d0eec323a0b4ef02a/contrib/mkimage/debootstrap#L82-L105), so explicit invocation is not required.
+Official Debian and Ubuntu images [automatically run `apt-get clean`](https://github.com/debuerreotype/debuerreotype/blob/c9542ab785e72696eb2908a6dbc9220abbabef39/scripts/debuerreotype-minimizing-config#L87-L109), so explicit invocation is not required.
 
 #### Using pipes
 
@@ -482,7 +510,7 @@ service, such as Apache and Rails, you would run something like `CMD
 for any service-based image.
 
 In most other cases, `CMD` should be given an interactive shell, such as bash,
-python and perl. For example, `CMD ["perl", "-de0"]`, `CMD ["python"]`, or `CMD
+Python and perl. For example, `CMD ["perl", "-de0"]`, `CMD ["python"]`, or `CMD
 ["php", "-a"]`. Using this form means that when you execute something like
 `docker run -it python`, you’ll get dropped into a usable shell, ready to go.
 `CMD` should rarely be used in the manner of `CMD ["param", "param"]` in
@@ -551,7 +579,7 @@ $ docker run --rm test sh -c 'echo $ADMIN_USER'
 mark
 ```
 
-To prevent this, and really unset the environment variable, use a `RUN` command
+To prevent this and unset the environment variable, use a `RUN` command
 with shell commands, to set, use, and unset the variable all in a single layer.
 You can separate your commands with `;` or `&&`. If you use the second method,
 and one of the commands fails, the `docker build` also fails. This is usually a
@@ -605,7 +633,7 @@ as part of your build. `ADD` is better than manually adding files using
 something like `wget` and `tar`, because it ensures a more precise build cache.
 `ADD` also has built-in support for checksum validation of the remote
 resources, and a protocol for parsing branches, tags, and subdirectories from
-[Git URLs](/reference/cli/docker/buildx/build.md#git-repositories).
+[Git URLs](/reference/cli/docker/buildx/build/).
 
 The following example uses `ADD` to download a .NET installer. Combined with
 multi-stage builds, only the .NET runtime remains in the final stage, no
@@ -634,9 +662,9 @@ RUN ln -s /usr/share/dotnet/dotnet /usr/bin/dotnet
 ```
 
 For more information about `ADD` or `COPY`, see the following:
+
 - [Dockerfile reference for the ADD instruction](/reference/dockerfile.md#add)
 - [Dockerfile reference for the COPY instruction](/reference/dockerfile.md#copy)
-
 
 ### ENTRYPOINT
 
@@ -674,7 +702,7 @@ For example, the [Postgres Official Image](https://hub.docker.com/_/postgres/)
 uses the following script as its `ENTRYPOINT`:
 
 ```bash
-#!/bin/bash
+#!/bin/sh
 set -e
 
 if [ "$1" = 'postgres' ]; then
@@ -690,8 +718,7 @@ fi
 exec "$@"
 ```
 
-
-This script uses [the `exec` Bash command](https://wiki.bash-hackers.org/commands/builtin/exec) so that the final running application becomes the container's PID 1. This allows the application to receive any Unix signals sent to the container. For more information, see the [`ENTRYPOINT` reference](/reference/dockerfile.md#entrypoint).
+This script uses [the `exec` builtin](https://pubs.opengroup.org/onlinepubs/9699919799/utilities/V3_chap02.html#exec) so that the final running application becomes the container's PID 1. This allows the application to receive any Unix signals sent to the container. For more information, see the [`ENTRYPOINT` reference](/reference/dockerfile.md#entrypoint).
 
 In the following example, a helper script is copied into the container and run via `ENTRYPOINT` on
 container start:
@@ -758,7 +785,7 @@ RUN groupadd -r postgres && useradd --no-log-init -r -g postgres postgres
 > with a significantly large UID inside a Docker container can lead to disk
 > exhaustion because `/var/log/faillog` in the container layer is filled with
 > NULL (\0) characters. A workaround is to pass the `--no-log-init` flag to
-> useradd. The Debian/Ubuntu `adduser` wrapper does not support this flag.
+> `useradd`. The Debian/Ubuntu `adduser` wrapper does not support this flag.
 
 Avoid installing or using `sudo` as it has unpredictable TTY and
 signal-forwarding behavior that can cause problems. If you absolutely need
@@ -773,11 +800,11 @@ For more information about `USER`, see [Dockerfile reference for the USER instru
 ### WORKDIR
 
 For clarity and reliability, you should always use absolute paths for your
-`WORKDIR`. Also, you should use `WORKDIR` instead of  proliferating instructions
+`WORKDIR`. Also, you should use `WORKDIR` instead of proliferating instructions
 like `RUN cd … && do-something`, which are hard to read, troubleshoot, and
 maintain.
 
-For more information about `WORKDIR`, see [Dockerfile reference for the WORKDIR instruction](/reference/dockerfile.md#workdir).
+For more information about `WORKDIR`, see [Dockerfile reference for the `WORKDIR` instruction](/reference/dockerfile.md#workdir).
 
 ### ONBUILD
 
@@ -797,7 +824,7 @@ Dockerfile, as you can see in [Ruby’s `ONBUILD` variants](https://github.com/d
 Images built with `ONBUILD` should get a separate tag. For example,
 `ruby:1.9-onbuild` or `ruby:2.0-onbuild`.
 
-Be careful when putting `ADD` or `COPY` in `ONBUILD`. The onbuild image
+Be careful when putting `ADD` or `COPY` in `ONBUILD`. The image
 fails catastrophically if the new build's context is missing the resource being
 added. Adding a separate tag, as recommended above, helps mitigate this by
 allowing the Dockerfile author to make a choice.

@@ -19,18 +19,6 @@ Docker Desktop uses the Windows Hyper-V features. While older Windows versions h
 
 No, running Docker Desktop on Windows Server is not supported.
 
-### Can I change permissions on shared volumes for container-specific deployment requirements?
-
-Docker Desktop does not enable you to control (`chmod`)
-the Unix-style permissions on [shared volumes](/manuals/desktop/settings-and-maintenance/settings.md#file-sharing) for
-deployed containers, but rather sets permissions to a default value of
-[0777](https://chmodcommand.com/chmod-0777/)
-(`read`, `write`, `execute` permissions for `user` and for
-`group`) which is not configurable.
-
-For workarounds and to learn more, see
-[Permissions errors on data directories for shared volumes](/manuals/desktop/troubleshoot-and-support/troubleshoot/topics.md#permissions-errors-on-data-directories-for-shared-volumes).
-
 ### How do symlinks work on Windows?
 
 Docker Desktop supports two types of symlinks: Windows native symlinks and symlinks created inside a container.
@@ -60,8 +48,8 @@ in the Docker Engine topics.
 ### How do I add client certificates?
 
 You can add your client certificates
-in `~/.docker/certs.d/<MyRegistry><Port>/client.cert` and
-`~/.docker/certs.d/<MyRegistry><Port>/client.key`. You do not need to push your certificates with `git` commands.
+in `~/.docker/certs.d/<MyRegistry>:<Port>/client.cert` and
+`~/.docker/certs.d/<MyRegistry>:<Port>/client.key`. You do not need to push your certificates with `git` commands.
 
 When the Docker Desktop application starts, it copies the
 `~/.docker/certs.d` folder on your Windows system to the `/etc/docker/certs.d`

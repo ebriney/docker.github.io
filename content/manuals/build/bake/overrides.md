@@ -55,15 +55,15 @@ If you don't specify any files, Bake will use the following lookup order:
 3. `docker-compose.yml`
 4. `docker-compose.yaml`
 5. `docker-bake.json`
-6. `docker-bake.override.json`
-7. `docker-bake.hcl`
+6. `docker-bake.hcl`
+7. `docker-bake.override.json`
 8. `docker-bake.override.hcl`
 
 If more than one Bake file is found, all files are loaded and merged into a
 single definition. Files are merged according to the lookup order.
 
 ```console
-$ docker buildx bake bake --print
+$ docker buildx bake --print
 [+] Building 0.0s (1/1) FINISHED                                                                                                                                                                                            
  => [internal] load local bake definitions                                                                                                                                                                             0.0s
  => => reading compose.yaml 45B / 45B                                                                                                                                                                                  0.0s
@@ -177,7 +177,7 @@ $ docker buildx bake -f docker-bake.hcl -f overrides.hcl --print
 ## Command line
 
 You can also override target configurations from the command line with the
-[`--set` flag](/reference/cli/docker/buildx/bake.md#set):
+[`--set` flag](/reference/cli/docker/buildx/bake/#set):
 
 ```hcl
 # docker-bake.hcl
@@ -211,6 +211,11 @@ $ docker buildx bake --set app.args.mybuildarg=bar --set app.platform=linux/arm6
   }
 }
 ```
+
+> [!NOTE]
+>
+> `--set` is a repeatable flag. For array fields such as `tags`, repeat `--set` to provide multiple values or use the `+=` operator to append without replacing.
+> Array literal syntax like `--set target.tags=[a,b]` is not supported.
 
 Pattern matching syntax defined in [https://golang.org/pkg/path/#Match](https://golang.org/pkg/path/#Match)
 is also supported:

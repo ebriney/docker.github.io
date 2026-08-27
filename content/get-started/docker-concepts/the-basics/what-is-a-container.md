@@ -8,6 +8,7 @@ aliases:
 - /guides/walkthroughs/run-a-container/
 - /guides/walkthroughs/
 - /get-started/run-your-own-container/
+- /get-started/what-is-a-container/
 - /guides/docker-concepts/the-basics/what-is-a-container/
 ---
 
@@ -28,7 +29,7 @@ What is a container? Simply put, containers are isolated processes for each of y
 Here's what makes them awesome. Containers are:
 
 - Self-contained. Each container has everything it needs to function with no reliance on any pre-installed dependencies on the host machine.
-- Isolated. Since containers are run in isolation, they have minimal influence on the host and other containers, increasing the security of your applications.
+- Isolated. Since containers run in isolation, they have minimal influence on the host and other containers, increasing the security of your applications.
 - Independent. Each container is independently managed. Deleting one container won't affect any others.
 - Portable. Containers can run anywhere! The container that runs on your development machine will work the same way in a data center or anywhere in the cloud!
 
@@ -56,7 +57,7 @@ Use the following instructions to run a container.
 
 2. Specify `welcome-to-docker` in the search input and then select the **Pull** button.
 
-    ![A screenshot of the Docker Desktop Dashboard showing the search result for welcome-to-docker Docker image ](images/search-the-docker-image.webp?border=true&w=1000&h=700)
+    ![A screenshot of the Docker Desktop Dashboard showing the search result for welcome-to-docker Docker image](images/search-the-docker-image.webp?border=true&w=1000&h=700)
 
 3. Once the image is successfully pulled, select the **Run** button.
 
@@ -82,9 +83,9 @@ This container runs a web server that displays a simple website. When working wi
 
 ### Access the frontend
 
-When you launched the container, you exposed one of the container's ports onto your machine. Think of this as creating configuration to let you to connect through the isolated environment of the container. 
+When you launched the container, you exposed one of the container's ports onto your machine. Think of this as creating configuration to let you connect through the isolated environment of the container. 
 
-For this container, the frontend is accessible on port `8080`. To open the website, select the link in the **Port(s)** column of your container or visit [http://localhost:8080](https://localhost:8080) in your browser.
+For this container, the frontend is accessible on port `8080`. To open the website, select the link in the **Port(s)** column of your container or visit [http://localhost:8080](http://localhost:8080) in your browser.
 
 ![Screenshot of the landing page coming from the running container](images/access-the-frontend.webp?border)
 

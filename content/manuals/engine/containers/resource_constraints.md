@@ -1,8 +1,8 @@
 ---
 title: Resource constraints
 weight: 30
-description: Specify the runtime options for a container
-keywords: docker, daemon, configuration, runtime
+description: Limit container memory and CPU usage with runtime configuration flags
+keywords: resource constraints, memory limits, CPU limits, cgroups, OOM, swap, docker run, memory swap
 aliases:
   - /engine/admin/resource_constraints/
   - /config/containers/resource_constraints/
@@ -16,7 +16,7 @@ on when you should set such limits and the possible implications of setting them
 
 Many of these features require your kernel to support Linux capabilities. To
 check for support, you can use the
-[`docker info`](/reference/cli/docker/system/info.md) command. If a capability
+[`docker info`](/reference/cli/docker/system/info/) command. If a capability
 is disabled in your kernel, you may see a warning at the end of the output like
 the following:
 
@@ -69,8 +69,8 @@ You can mitigate the risk of system instability due to OOME by:
 
 Docker can enforce hard or soft memory limits.
 
-- Hard limits lets the container use no more than a fixed amount of memory.
-- Soft limits lets the container use as much memory as it needs unless certain
+- Hard limits let the container use no more than a fixed amount of memory.
+- Soft limits let the container use as much memory as it needs unless certain
   conditions are met, such as when the kernel detects low memory or contention on
   the host machine.
 
@@ -86,7 +86,6 @@ Most of these options take a positive integer, followed by a suffix of `b`, `k`,
 | `--memory-swap`\*      | The amount of memory this container is allowed to swap to disk. See [`--memory-swap` details](#--memory-swap-details).                                                                                                                                                                                                                                                                          |
 | `--memory-swappiness`  | By default, the host kernel can swap out a percentage of anonymous pages used by a container. You can set `--memory-swappiness` to a value between 0 and 100, to tune this percentage. See [`--memory-swappiness` details](#--memory-swappiness-details).                                                                                                                                       |
 | `--memory-reservation` | Allows you to specify a soft limit smaller than `--memory` which is activated when Docker detects contention or low memory on the host machine. If you use `--memory-reservation`, it must be set lower than `--memory` for it to take precedence. Because it is a soft limit, it doesn't guarantee that the container doesn't exceed the limit.                                                |
-| `--kernel-memory`      | The maximum amount of kernel memory the container can use. The minimum allowed value is `6m`. Because kernel memory can't be swapped out, a container which is starved of kernel memory may block host machine resources, which can have side effects on the host machine and on other containers. See [`--kernel-memory` details](#--kernel-memory-details).                                   |
 | `--oom-kill-disable`   | By default, if an out-of-memory (OOM) error occurs, the kernel kills processes in a container. To change this behavior, use the `--oom-kill-disable` option. Only disable the OOM killer on containers where you have also set the `-m/--memory` option. If the `-m` flag isn't set, the host can run out of memory and the kernel may need to kill the host system's processes to free memory. |
 
 For more information about cgroups and memory in general, see the documentation
@@ -116,7 +115,7 @@ Its setting can have complicated effects:
   [Prevent a container from using swap](#prevent-a-container-from-using-swap).
 
 - If `--memory-swap` is unset, and `--memory` is set, the container can use
-  as much swap as the `--memory` setting, if the host container has swap
+  as much swap as the `--memory` setting, if the host has swap
   memory configured. For instance, if `--memory="300m"` and `--memory-swap` is
   not set, the container can use 600m in total of memory and swap.
 
@@ -139,34 +138,6 @@ of physical memory that can be used.
 - By default, if you don't set `--memory-swappiness`, the value is
   inherited from the host machine.
 
-### `--kernel-memory` details
-
-Kernel memory limits are expressed in terms of the overall memory allocated to
-a container. Consider the following scenarios:
-
-- **Unlimited memory, unlimited kernel memory**: This is the default
-  behavior.
-- **Unlimited memory, limited kernel memory**: This is appropriate when the
-  amount of memory needed by all cgroups is greater than the amount of
-  memory that actually exists on the host machine. You can configure the
-  kernel memory to never go over what's available on the host machine,
-  and containers which need more memory need to wait for it.
-- **Limited memory, unlimited kernel memory**: The overall memory is
-  limited, but the kernel memory isn't.
-- **Limited memory, limited kernel memory**: Limiting both user and kernel
-  memory can be useful for debugging memory-related problems. If a container
-  is using an unexpected amount of either type of memory, it runs out
-  of memory without affecting other containers or the host machine. Within
-  this setting, if the kernel memory limit is lower than the user memory
-  limit, running out of kernel memory causes the container to experience
-  an OOM error. If the kernel memory limit is higher than the user memory
-  limit, the kernel limit doesn't cause the container to experience an OOM.
-
-When you enable kernel memory limits, the host machine tracks "high water mark"
-statistics on a per-process basis, so you can track which processes (in this
-case, containers) are using excess memory. This can be seen per process by
-viewing `/proc/<PID>/status` on the host machine.
-
 ## CPU
 
 By default, each container's access to the host machine's CPU cycles is unlimited.
@@ -186,7 +157,7 @@ the container's cgroup on the host machine.
 | :--------------------- | :------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | `--cpus=<value>`       | Specify how much of the available CPU resources a container can use. For instance, if the host machine has two CPUs and you set `--cpus="1.5"`, the container is guaranteed at most one and a half of the CPUs. This is the equivalent of setting `--cpu-period="100000"` and `--cpu-quota="150000"`.                                                                                                                                                                                                                                                                                              |
 | `--cpu-period=<value>` | Specify the CPU CFS scheduler period, which is used alongside `--cpu-quota`. Defaults to 100000 microseconds (100 milliseconds). Most users don't change this from the default. For most use-cases, `--cpus` is a more convenient alternative.                                                                                                                                                                                                                                                                                                                                                     |
-| `--cpu-quota=<value>`  | Impose a CPU CFS quota on the container. The number of microseconds per `--cpu-period` that the container is limited to before throttled. As such acting as the effective ceiling. For most use-cases, `--cpus` is a more convenient alternative.                                                                                                                                                                                                                                                                                                                                                  |
+| `--cpu-quota=<value>`  | Impose a CPU CFS quota on the container. The number of microseconds per `--cpu-period` that the container is limited to before being throttled. As such acting as the effective ceiling. For most use-cases, `--cpus` is a more convenient alternative.                                                                                                                                                                                                                                                                                                                                                  |
 | `--cpuset-cpus`        | Limit the specific CPUs or cores a container can use. A comma-separated list or hyphen-separated range of CPUs a container can use, if you have more than one CPU. The first CPU is numbered 0. A valid value might be `0-3` (to use the first, second, third, and fourth CPU) or `1,3` (to use the second and fourth CPU).                                                                                                                                                                                                                                                                        |
 | `--cpu-shares`         | Set this flag to a value greater or less than the default of 1024 to increase or reduce the container's weight, and give it access to a greater or lesser proportion of the host machine's CPU cycles. This is only enforced when CPU cycles are constrained. When plenty of CPU cycles are available, all containers use as much CPU as they need. In that way, this is a soft limit. `--cpu-shares` doesn't prevent containers from being scheduled in Swarm mode. It prioritizes container CPU resources for the available CPU cycles. It doesn't guarantee or reserve any specific CPU access. |
 
@@ -234,7 +205,7 @@ for real-time tasks per runtime period. For instance, with the default period of
 containers using the real-time scheduler can run for 950000 microseconds for every
 1000000-microsecond period, leaving at least 50000 microseconds available for
 non-real-time tasks. To make this configuration permanent on systems which use
-`systemd`, create a systemd unit file for the `docker` service. For an example,
+`systemd`, create a systemd unit file for the `docker` service. For example,
 see the instruction on how to configure the daemon to use a proxy with a
 [systemd unit file](../daemon/proxy.md#systemd-unit-file).
 
@@ -265,84 +236,5 @@ If the kernel or Docker daemon isn't configured correctly, an error occurs.
 
 ## GPU
 
-### Access an NVIDIA GPU
-
-#### Prerequisites
-
-Visit the official [NVIDIA drivers page](https://www.nvidia.com/Download/index.aspx)
-to download and install the proper drivers. Reboot your system once you have
-done so.
-
-Verify that your GPU is running and accessible.
-
-#### Install nvidia-container-toolkit
-
-Follow the official NVIDIA Container Toolkit [installation instructions](https://docs.nvidia.com/datacenter/cloud-native/container-toolkit/latest/install-guide.html).
-
-#### Expose GPUs for use
-
-Include the `--gpus` flag when you start a container to access GPU resources.
-Specify how many GPUs to use. For example:
-
-```console
-$ docker run -it --rm --gpus all ubuntu nvidia-smi
-```
-
-Exposes all available GPUs and returns a result akin to the following:
-
-```bash
-+-------------------------------------------------------------------------------+
-| NVIDIA-SMI 384.130            	Driver Version: 384.130               	|
-|-------------------------------+----------------------+------------------------+
-| GPU  Name 	   Persistence-M| Bus-Id    	Disp.A | Volatile Uncorr. ECC   |
-| Fan  Temp  Perf  Pwr:Usage/Cap|         Memory-Usage | GPU-Util  Compute M.   |
-|===============================+======================+========================|
-|   0  GRID K520       	Off  | 00000000:00:03.0 Off |                  N/A      |
-| N/A   36C	P0    39W / 125W |  	0MiB /  4036MiB |      0%  	Default |
-+-------------------------------+----------------------+------------------------+
-+-------------------------------------------------------------------------------+
-| Processes:                                                       GPU Memory   |
-|  GPU   	PID   Type   Process name                         	Usage  	|
-|===============================================================================|
-|  No running processes found                                                   |
-+-------------------------------------------------------------------------------+
-```
-
-Use the `device` option to specify GPUs. For example:
-
-```console
-$ docker run -it --rm --gpus device=GPU-3a23c669-1f69-c64e-cf85-44e9b07e7a2a ubuntu nvidia-smi
-```
-
-Exposes that specific GPU.
-
-```console
-$ docker run -it --rm --gpus '"device=0,2"' ubuntu nvidia-smi
-```
-
-Exposes the first and third GPUs.
-
-> [!NOTE]
->
-> NVIDIA GPUs can only be accessed by systems running a single engine.
-
-#### Set NVIDIA capabilities
-
-You can set capabilities manually. For example, on Ubuntu you can run the
-following:
-
-```console
-$ docker run --gpus 'all,capabilities=utility' --rm ubuntu nvidia-smi
-```
-
-This enables the `utility` driver capability which adds the `nvidia-smi` tool to
-the container.
-
-Capabilities as well as other configurations can be set in images via
-environment variables. More information on valid variables can be found in the
-[nvidia-container-toolkit](https://docs.nvidia.com/datacenter/cloud-native/container-toolkit/latest/docker-specialized.html)
-documentation. These variables can be set in a Dockerfile.
-
-You can also use CUDA images which sets these variables automatically. See the
-official [CUDA images](https://catalog.ngc.nvidia.com/orgs/nvidia/containers/cuda)
-NGC catalog page.
+For information on how to access NVIDIA GPUs from a container, see
+[GPU access](gpu.md).

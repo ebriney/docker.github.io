@@ -1,16 +1,11 @@
 ---
-description: Download and install Docker Compose on Linux with this step-by-step handbook.
-  This plugin can be installed manually or by using a repository.
-keywords: install docker compose linux, docker compose linux, docker compose plugin,
-  docker-compose-plugin, linux install docker compose, install docker-compose linux,
-  linux install docker-compose, linux docker compose, docker compose v2 linux, install
-  docker compose on linux
+description: Step-by-step instructions for installing the Docker Compose plugin on Linux using a package repository or manual method.
+keywords: install docker compose linux, docker compose plugin, docker-compose-plugin linux, docker compose v2, docker compose manual install, linux docker compose
 toc_max: 3
 title: Install the Docker Compose plugin
 linkTitle: Plugin
 aliases:
-- /compose/compose-plugin/
-- /compose/compose-linux/
+- /compose/install/compose-plugin/
 weight: 10
 ---
 
@@ -22,7 +17,7 @@ To install the Docker Compose plugin on Linux, you can either:
 
 > [!NOTE]
 >
-> These instructions assume you already have Docker Engine and Docker CLI installed and now want to install the Docker Compose plugin. For the Docker Compose standalone, see [Install the Docker Compose Standalone](standalone.md).
+> These instructions assume you already have Docker Engine and Docker CLI installed and now want to install the Docker Compose plugin. 
 
 ## Install using the repository
 
@@ -33,8 +28,7 @@ To install the Docker Compose plugin on Linux, you can either:
     [Debian](/manuals/engine/install/debian.md#install-using-the-repository) |
     [Raspberry Pi OS](/manuals/engine/install/raspberry-pi-os.md#install-using-the-repository) |
     [Fedora](/manuals/engine/install/fedora.md#set-up-the-repository) |
-    [RHEL](/manuals/engine/install/rhel.md#set-up-the-repository) |
-    [SLES](/manuals/engine/install/sles.md#set-up-the-repository).
+    [RHEL](/manuals/engine/install/rhel.md#set-up-the-repository).
 
 2. Update the package index, and install the latest version of Docker Compose:
 
@@ -57,14 +51,6 @@ To install the Docker Compose plugin on Linux, you can either:
     $ docker compose version
     ```
 
-    Expected output:
-
-    ```text
-    Docker Compose version vN.N.N
-    ```
-
-    Where `vN.N.N` is placeholder text standing in for the latest version.
-
 ### Update Docker Compose
 
 To update the Docker Compose plugin, run the following commands:
@@ -84,9 +70,9 @@ To update the Docker Compose plugin, run the following commands:
 
 ## Install the plugin manually
 
-> [!NOTE]
+> [!WARNING]
 >
-> This option requires you to manage upgrades manually. It is recommended that you set up Docker's repository for easier maintenance.
+> Manual installations don’t auto-update. For ease of maintenance, use the Docker repository method.
 
 1.  To download and install the Docker Compose CLI plugin, run:
 
@@ -120,9 +106,8 @@ To update the Docker Compose plugin, run the following commands:
     ```console
     $ docker compose version
     ```
-   
-   Expected output:
 
-    ```text
-    Docker Compose version {{% param "compose_version" %}}
-    ```
+## What's next?
+
+- [Understand how Compose works](/manuals/compose/intro/compose-application-model.md)
+- [Try the Quickstart guide](/manuals/compose/gettingstarted.md)

@@ -10,22 +10,26 @@ weight: 210
 >
 > Uninstalling Docker Desktop destroys Docker containers, images, volumes, and
 > other Docker-related data local to the machine, and removes the files generated
-> by the application. To learn how to preserve important data before uninstalling, refer to the [back up and restore data](/manuals/desktop/settings-and-maintenance/backup-and-restore.md) section.
+> by the application. To preserve important data before uninstalling, refer to the [back up and restore data](/manuals/desktop/settings-and-maintenance/backup-and-restore.md) section.
 
 {{< tabs >}}
 {{< tab name="Windows" >}}
 
-To uninstall Docker Desktop from your Windows machine:
+#### From the GUI
 
 1. From the Windows **Start** menu, select **Settings** > **Apps** > **Apps & features**.
 2. Select **Docker Desktop** from the **Apps & features** list and then select **Uninstall**.
 3. Select **Uninstall** to confirm your selection.
 
-You can also uninstall Docker Desktop from the CLI:
+#### From the CLI
 
 1. Locate the installer:
    ```console
+   # all-user installation
    $ C:\Program Files\Docker\Docker\Docker Desktop Installer.exe
+
+   # per-user installation (Beta)
+   $ %LOCALAPPDATA%\Programs\DockerDesktop\Docker Desktop Installer.exe
    ```
 2. Uninstall Docker Desktop. 
  - In PowerShell, run:
@@ -37,7 +41,7 @@ You can also uninstall Docker Desktop from the CLI:
     $ start /w "" "Docker Desktop Installer.exe" uninstall
     ```
 
-After uninstalling Docker Desktop, there may be some residual files left behind which you can remove manually. These are:
+After uninstalling Docker Desktop, some residual files may remain which you can remove manually. These are:
 
 ```console
 C:\ProgramData\Docker
@@ -52,121 +56,150 @@ C:\Users\<your user name>\.docker
 {{< /tab >}}
 {{< tab name="Mac" >}}
 
-To uninstall Docker Desktop from your Mac:
+#### From the GUI
 
-1. From the Docker menu, select the **Troubleshoot** icon in the top-right corner of the Docker Desktop Dashboard and then select **Uninstall**.
-2. Select **Uninstall** to confirm your selection.
+1. Open Docker Desktop. 
+2. In the top-right corner of the Docker Desktop Dashboard, select the **Troubleshoot** icon.
+3. Select **Uninstall**.
+4. When prompted, confirm by selecting **Uninstall** again.
 
-You can also uninstall Docker Desktop from the CLI. Run:
+You can then move the Docker application to the trash. 
+
+#### From the CLI
+
+Run:
 
 ```console
 $ /Applications/Docker.app/Contents/MacOS/uninstall
 ```
 
-You may encounter the following error when uninstalling Docker Desktop using the uninstall command.
-```console
-$ /Applications/Docker.app/Contents/MacOS/uninstall
-Password:
-Uninstalling Docker Desktop...
-Error: unlinkat /Users/<USER_HOME>/Library/Containers/com.docker.docker/.com.apple.containermanagerd.metadata.plist: operation not permitted
-```
-The operation not permitted error is reported either on the file `.com.apple.containermanagerd.metadata.plist` or on the parent directory `/Users/<USER_HOME>/Library/Containers/com.docker.docker/`. This error can be ignored as you have successfully uninstalled Docker Desktop.
-You can remove the directory `/Users/<USER_HOME>/Library/Containers/com.docker.docker/` later by allowing **Full Disk Access** to the terminal application you are using (**System Settings** > **Privacy & Security** > **Full Disk Access**).
+You can then move the Docker application to the trash. 
 
-After uninstalling Docker Desktop, there may be some residual files left behind which you can remove:
+> [!NOTE]
+> You may encounter the following error when uninstalling Docker Desktop using the uninstall command.
+>
+> ```console
+> $ /Applications/Docker.app/Contents/MacOS/uninstall
+> Password:
+> Uninstalling Docker Desktop...
+> Error: unlinkat /Users/<USER_HOME>/Library/Containers/com.docker.docker/.com.apple.containermanagerd.metadata.plist: > operation not permitted
+> ```
+>
+> The operation not permitted error is reported either on the file `.com.apple.containermanagerd.metadata.plist` or on the parent directory `/Users/<USER_HOME>/Library/Containers/com.docker.docker/`. This error can be ignored as you have successfully uninstalled Docker Desktop.
+> You can remove the directory `/Users/<USER_HOME>/Library/Containers/com.docker.docker/` later by allowing **Full Disk Access** to the terminal application you are using (**System Settings** > **Privacy & Security** > **Full Disk Access**).
+
+After uninstalling Docker Desktop, some residual files may remain which you can remove:
 
 ```console
 $ rm -rf ~/Library/Group\ Containers/group.com.docker
 $ rm -rf ~/.docker
 ```
 
-You can also move the Docker application to the trash. 
-
-{{< /tab >}}
-{{< tab name="Linux" >}}
-
-Docker Desktop is removed from a Linux host using the package manager.
-
-Once Docker Desktop is removed, users must delete the `credsStore` and `currentContext` properties from the `~/.docker/config.json`.
-
 {{< /tab >}}
 {{< tab name="Ubuntu" >}}
 
-To remove Docker Desktop for Ubuntu, run:
+To uninstall Docker Desktop for Ubuntu:
 
-```console
-$ sudo apt remove docker-desktop
-```
+1. Remove the Docker Desktop application. Run:
 
-For a complete cleanup, remove configuration and data files at `$HOME/.docker/desktop`, the symlink at `/usr/local/bin/com.docker.cli`, and purge
-the remaining systemd service files.
+   ```console
+   $ sudo apt remove docker-desktop
+   ```
 
-```console
-$ rm -r $HOME/.docker/desktop
-$ sudo rm /usr/local/bin/com.docker.cli
-$ sudo apt purge docker-desktop
-```
+   This removes the Docker Desktop package itself but doesn’t delete all of its files or settings.
 
-Remove the `credsStore` and `currentContext` properties from `$HOME/.docker/config.json`. Additionally, you must delete any edited configuration files manually. 
+2. Manually remove leftover file.
+
+   ```console
+   $ rm -r $HOME/.docker/desktop
+   $ sudo rm /usr/local/bin/com.docker.cli
+   $ sudo apt purge docker-desktop
+   ```
+
+   This removes configuration and data files at `$HOME/.docker/desktop`, the symlink at `/usr/local/bin/com.docker.cli`, and purges the remaining systemd service files.
+
+3. Clean up Docker config settings. In `$HOME/.docker/config.json`, remove the `credsStore` and `currentContext` properties.
+
+   These entries tell Docker where to store credentials and which context is active. If they remain after uninstalling Docker Desktop, they may conflict with a future Docker setup.
 
 {{< /tab >}}
 {{< tab name="Debian" >}}
 
-To remove Docker Desktop for Debian, run:
+To uninstall Docker Desktop for Debian, run:
 
-```console
-$ sudo apt remove docker-desktop
-```
+1. Remove the Docker Desktop application:
 
-For a complete cleanup, remove configuration and data files at `$HOME/.docker/desktop`, the symlink at `/usr/local/bin/com.docker.cli`, and purge
-the remaining systemd service files.
+   ```console
+   $ sudo apt remove docker-desktop
+   ```
 
-```console
-$ rm -r $HOME/.docker/desktop
-$ sudo rm /usr/local/bin/com.docker.cli
-$ sudo apt purge docker-desktop
-```
+   This removes the Docker Desktop package itself but doesn’t delete all of its files or settings.
 
-Remove the `credsStore` and `currentContext` properties from `$HOME/.docker/config.json`. Additionally, you must delete any edited configuration files manually.
+2. Manually remove leftover file.
+
+   ```console
+   $ rm -r $HOME/.docker/desktop
+   $ sudo rm /usr/local/bin/com.docker.cli
+   $ sudo apt purge docker-desktop
+   ```
+
+   This removes configuration and data files at `$HOME/.docker/desktop`, the symlink at `/usr/local/bin/com.docker.cli`, and purges the remaining systemd service files.
+
+3. Clean up Docker config settings. In `$HOME/.docker/config.json`, remove the `credsStore` and `currentContext` properties.
+
+   These entries tell Docker where to store credentials and which context is active. If they remain after uninstalling Docker Desktop, they may conflict with a future Docker setup.
 
 {{< /tab >}}
 {{< tab name="Fedora" >}}
 
-To remove Docker Desktop for Fedora, run:
+To uninstall Docker Desktop for Fedora:
 
-```console
-$ sudo dnf remove docker-desktop
-```
+1. Remove the Docker Desktop application. Run:
 
-For a complete cleanup, remove configuration and data files at `$HOME/.docker/desktop`, the symlink at `/usr/local/bin/com.docker.cli`, and purge
-the remaining systemd service files.
+   ```console
+   $ sudo dnf remove docker-desktop
+   ```
 
-```console
-$ rm -r $HOME/.docker/desktop
-$ sudo rm /usr/local/bin/com.docker.cli
-```
+   This removes the Docker Desktop package itself but doesn’t delete all of its files or settings.
 
-Remove the `credsStore` and `currentContext` properties from `$HOME/.docker/config.json`. Additionally, you must delete any edited configuration files manually. 
+2. Manually remove leftover file.
+
+   ```console
+   $ rm -r $HOME/.docker/desktop
+   $ sudo rm /usr/local/bin/com.docker.cli
+   $ sudo dnf remove docker-desktop
+   ```
+
+   This removes configuration and data files at `$HOME/.docker/desktop`, the symlink at `/usr/local/bin/com.docker.cli`, and purges the remaining systemd service files.
+
+3. Clean up Docker config settings. In `$HOME/.docker/config.json`, remove the `credsStore` and `currentContext` properties.
+
+   These entries tell Docker where to store credentials and which context is active. If they remain after uninstalling Docker Desktop, they may conflict with a future Docker setup.
 
 {{< /tab >}}
 {{< tab name="Arch" >}}
 
-To remove Docker Desktop for Arch, run:
+To uninstall Docker Desktop for Arch:
 
-```console
-$ sudo pacman -R docker-desktop
-```
+1. Remove the Docker Desktop application. Run:
 
-For a complete cleanup, remove configuration and data files at `$HOME/.docker/desktop`, the symlink at `/usr/local/bin/com.docker.cli`, and purge
-the remaining systemd service files.
+   ```console
+   $ sudo pacman -Rns docker-desktop
+   ```
 
-```console
-$ rm -r $HOME/.docker/desktop
-$ sudo rm /usr/local/bin/com.docker.cli
-$ sudo pacman -Rns docker-desktop
-```
+   This removes the Docker Desktop package along with its configuration files and dependencies not required by other packages.
 
-Remove the `credsStore` and `currentContext` properties from `$HOME/.docker/config.json`. Additionally, you must delete any edited configuration files manually. 
+2. Manually remove leftover files.
+
+   ```console
+   $ rm -r $HOME/.docker/desktop
+   ```
+
+   This removes configuration and data files at `$HOME/.docker/desktop`.
+
+3. Clean up Docker config settings. In `$HOME/.docker/config.json`, remove the `credsStore` and `currentContext` properties.
+
+   These entries tell Docker where to store credentials and which context is active. If they remain after uninstalling Docker Desktop, they may conflict with a future Docker setup.
 
 {{< /tab >}}
 {{< /tabs >}}

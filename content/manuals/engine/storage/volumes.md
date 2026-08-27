@@ -13,6 +13,7 @@ aliases:
   - /engine/userguide/dockervolumes/
   - /engine/admin/volumes/volumes/
   - /storage/volumes/
+  - /engine/admin/volumes/backing-up/
 ---
 
 Volumes are persistent data stores for containers, created and managed by
@@ -56,7 +57,7 @@ If your container generates non-persistent state data, consider using a
 increase the container's performance by avoiding writing into the container's
 writable layer.
 
-Volumes use `rprivate` bind propagation, and bind propagation isn't
+Volumes use `rprivate` (recursive private) bind propagation, and bind propagation isn't
 configurable for volumes.
 
 ## A volume's lifecycle
@@ -402,9 +403,8 @@ $ docker volume rm nginx-vol
 
 ## Use a read-only volume
 
-For some development applications, the container needs to write into the bind
-mount so that changes are propagated back to the Docker host. At other times,
-the container only needs read access to the data. Multiple
+For some applications, the container needs to write to the volume. At other
+times, the container only needs read access to the data. Multiple
 containers can mount the same volume. You can simultaneously mount a
 single volume as `read-write` for some containers and as `read-only` for others.
 
@@ -493,7 +493,7 @@ $ docker run --rm \
   alpine mkdir -p /logs/app1 /logs/app2
 $ docker run -d \
   --name=app1 \
-  --mount src=logs,dst=/var/log/app1/,volume-subpath=app1 \
+  --mount src=logs,dst=/var/log/app1,volume-subpath=app1 \
   app1:latest
 $ docker run -d \
   --name=app2 \
@@ -525,7 +525,7 @@ store data in the cloud, without changing the application logic.
 
 When you create a volume using `docker volume create`, or when you start a
 container which uses a not-yet-created volume, you can specify a volume driver.
-The following examples use the `vieux/sshfs` volume driver, first when creating
+The following examples use the `rclone/docker-volume-rclone` volume driver, first when creating
 a standalone volume, and then when starting a container which creates a new
 volume.
 
@@ -551,30 +551,32 @@ volume.
 The following example assumes that you have two nodes, the first of which is a Docker
 host and can connect to the second node using SSH.
 
-On the Docker host, install the `vieux/sshfs` plugin:
+On the Docker host, install the `rclone/docker-volume-rclone` plugin:
 
 ```console
-$ docker plugin install --grant-all-permissions vieux/sshfs
+$ docker plugin install --grant-all-permissions rclone/docker-volume-rclone --aliases rclone
 ```
 
 ### Create a volume using a volume driver
 
-This example specifies an SSH password, but if the two hosts have shared keys
-configured, you can exclude the password. Each volume driver may have zero or more
+This example mounts the `/remote` directory on host `1.2.3.4` into a
+volume named `rclonevolume`. Each volume driver may have zero or more
 configurable options, you specify each of them using an `-o` flag.
 
 ```console
-$ docker volume create --driver vieux/sshfs \
-  -o sshcmd=test@node2:/home/test \
-  -o password=testpassword \
-  sshvolume
+$ docker volume create \
+  -d rclone \
+  --name rclonevolume \
+  -o type=sftp \
+  -o path=remote \
+  -o sftp-host=1.2.3.4 \
+  -o sftp-user=user \
+  -o "sftp-password=$(cat file_containing_password_for_remote_host)"
 ```
 
-### Start a container which creates a volume using a volume driver
+This volume can now be mounted into containers.
 
-The following example specifies an SSH password. However, if the two hosts have
-shared keys configured, you can exclude the password.
-Each volume driver may have zero or more configurable options.
+### Start a container which creates a volume using a volume driver
 
 > [!NOTE]
 >
@@ -583,8 +585,8 @@ Each volume driver may have zero or more configurable options.
 
 ```console
 $ docker run -d \
-  --name sshfs-container \
-  --mount type=volume,volume-driver=vieux/sshfs,src=sshvolume,target=/app,volume-opt=sshcmd=test@node2:/home/test,volume-opt=password=testpassword \
+  --name rclone-container \
+  --mount type=volume,volume-driver=rclone,src=rclonevolume,target=/app,volume-opt=type=sftp,volume-opt=path=remote, volume-opt=sftp-host=1.2.3.4,volume-opt=sftp-user=user,volume-opt=-o "sftp-password=$(cat file_containing_password_for_remote_host)" \
   nginx:latest
 ```
 
@@ -622,7 +624,7 @@ $ docker volume create \
 	--opt type=cifs \
 	--opt device=//uxxxxx.your-server.de/backup \
 	--opt o=addr=uxxxxx.your-server.de,username=uxxxxxxx,password=*****,file_mode=0777,dir_mode=0777 \
-	--name cif-volume
+	--name cifs-volume
 ```
 
 The `addr` option is required if you specify a hostname instead of an IP.
@@ -772,14 +774,17 @@ testing using your preferred tools.
 A Docker data volume persists after you delete a container. There are two types
 of volumes to consider:
 
-- Named volumes have a specific source from outside the container, for example, `awesome:/bar`.
-- Anonymous volumes have no specific source. Therefore, when the container is deleted, you can instruct the Docker Engine daemon to remove them.
+- Named volumes have a specific name, for example, `awesome:/bar`, where `awesome` is the name.
+- Anonymous volumes have no specific name. Therefore, when the container is deleted, you can instruct the Docker Engine daemon to remove them.
 
 ### Remove anonymous volumes
 
 To automatically remove anonymous volumes, use the `--rm` option. For example,
 this command creates an anonymous `/foo` volume. When you remove the container,
 the Docker Engine removes the `/foo` volume but not the `awesome` volume.
+
+The `--rm` option works with both foreground and detached (`-d`) containers.
+The anonymous volumes are cleaned up when the container exits.
 
 ```console
 $ docker run --rm -v /foo -v awesome:/bar busybox top
@@ -803,5 +808,6 @@ $ docker volume prune
 
 - Learn about [bind mounts](bind-mounts.md).
 - Learn about [tmpfs mounts](tmpfs.md).
+- Learn about [image mounts](image-mounts.md).
 - Learn about [storage drivers](/engine/storage/drivers/).
 - Learn about [third-party volume driver plugins](/engine/extend/legacy_plugins/).

@@ -1,6 +1,6 @@
 # syntax=docker/dockerfile:1
 
-ARG GO_VERSION=1.23
+ARG GO_VERSION=1.26
 
 FROM scratch AS sitedir
 
@@ -8,9 +8,6 @@ FROM golang:${GO_VERSION}-alpine AS base
 RUN apk add --no-cache openssl
 ENV CGO_ENABLED=0
 WORKDIR /src
-COPY go.mod go.sum ./
-RUN --mount=type=cache,target=/go/pkg/mod \
-  go mod download
 
 FROM base AS releaser
 RUN --mount=type=bind,target=. \
@@ -18,17 +15,11 @@ RUN --mount=type=bind,target=. \
   --mount=type=cache,target=/root/.cache/go-build \
   go build -o /out/releaser .
 
-FROM base AS aws-s3-update-config
-ARG DRY_RUN=false
-ARG AWS_REGION
-ARG AWS_S3_BUCKET
-ARG AWS_S3_CONFIG
+# releaser-test runs the unit tests for the CloudFront redirect Lambda function.
+FROM base AS releaser-test
+RUN apk add --no-cache nodejs
 RUN --mount=type=bind,target=. \
-  --mount=type=bind,from=releaser,source=/out/releaser,target=/usr/bin/releaser \
-  --mount=type=secret,id=AWS_ACCESS_KEY_ID \
-  --mount=type=secret,id=AWS_SECRET_ACCESS_KEY \
-  --mount=type=secret,id=AWS_SESSION_TOKEN \
-  releaser aws s3-update-config
+  node --test cloudfront-lambda-redirects.test.js
 
 FROM base AS aws-lambda-invoke
 ARG DRY_RUN=false

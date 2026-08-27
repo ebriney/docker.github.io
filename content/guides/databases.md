@@ -4,10 +4,10 @@ keywords: database, mysql
 title: Use containerized databases
 summary: |
   Learn how to effectively run and manage databases as containers.
-tags: [databases]
 aliases:
   - /guides/use-case/databases/
 params:
+  tags: [databases]
   time: 20 minutes
 ---
 
@@ -68,7 +68,7 @@ In this command:
 - `mysql:latest` specifies that you want to use the latest version of the MySQL
   image.
 
-To verify that you container is running, run `docker ps` in a terminal
+To verify that your container is running, run `docker ps` in a terminal
 
 {{< /tab >}}
 {{< tab name="GUI" >}}
@@ -78,8 +78,8 @@ To run a container using the GUI:
 1. In the Docker Desktop Dashboard, select the global search at the top of the window.
 2. Specify `mysql` in the search box, and select the `Images` tab if not already
    selected.
-3. Hover over the `msyql` image and select `Run`.
-   The **Run a new container** model appears.
+3. Hover over the `mysql` image and select `Run`.
+   The **Run a new container** modal appears.
 4. Expand **Optional settings**.
 5. In the optional settings, specify the following:
 
@@ -181,7 +181,7 @@ interact with your MySQL database.
 Before you begin, you must remove any containers you previously ran for this
 guide. To stop and remove a container, either:
 
-- In a terminal, run `docker remove --force my-mysql` to remove the container
+- In a terminal, run `docker rm --force my-mysql` to remove the container
   named `my-mysql`.
 - Or, in the Docker Desktop Dashboard, select the **Delete** icon next to your
   container in the **Containers** view.
@@ -221,8 +221,8 @@ To run a container using the GUI:
 1. In the Docker Desktop Dashboard, select the global search at the top of the window.
 2. Specify `mysql` in the search box, and select the `Images` tab if not already
    selected.
-3. Hover over the `msyql` image and select `Run`.
-   The **Run a new container** model appears.
+3. Hover over the `mysql` image and select `Run`.
+   The **Run a new container** modal appears.
 4. Expand **Optional settings**.
 5. In the optional settings, specify the following:
 
@@ -236,7 +236,7 @@ To run a container using the GUI:
 
 6. Select `Run`.
 7. In the **Containers** view, verify that the port is mapped under the
-   **Port(s)** column. You should see **3307:3306** for the **my-mysql**
+   **Port(s)** column. You should see `3307:3306` for the `my-mysql`
    container.
 
 {{< /tab >}}
@@ -256,7 +256,7 @@ the same Docker network.
 Before you begin, you must remove any containers you previously ran for this
 guide. To stop and remove a container, either:
 
-- In a terminal, run `docker remove --force my-mysql` to remove the container
+- In a terminal, run `docker rm --force my-mysql` to remove the container
   named `my-mysql`.
 - Or, in the Docker Desktop Dashboard, select the **Delete** icon next to your
   container in the **Containers** view.
@@ -311,7 +311,7 @@ CLI or the Docker Desktop GUI.
 Before you begin, you must remove any containers you previously ran for this
 guide. To stop and remove a container, either:
 
-- In a terminal, run `docker remove --force my-mysql` to remove the container
+- In a terminal, run `docker rm --force my-mysql` to remove the container
   named `my-mysql`.
 - Or, in the Docker Desktop Dashboard, select the **Delete** icon next to your
   container in the **Containers** view.
@@ -352,7 +352,7 @@ data persists:
    be lost when removing the container.
 
    ```console
-   $ docker remove --force my-mysql
+   $ docker rm --force my-mysql
    ```
 
 4. Start a new container with the volume attached. This time, you don't need to
@@ -392,7 +392,7 @@ data persists:
    2. Specify `mysql` in the search box, and select the **Images** tab if not
       already selected.
    3. Hover over the **mysql** image and select **Run**.
-      The **Run a new container** model appears.
+      The **Run a new container** modal appears.
    4. Expand **Optional settings**.
    5. In the optional settings, specify the following:
 
@@ -433,7 +433,7 @@ data persists:
    2. Specify `mysql` in the search box, and select the **Images** tab if not
       already selected.
    3. Hover over the **mysql** image and select **Run**.
-      The **Run a new container** model appears.
+      The **Run a new container** modal appears.
    4. Expand **Optional settings**.
    5. In the optional settings, specify the following:
 
@@ -486,7 +486,7 @@ run a custom MySQL image that includes a table initialization script.
 Before you begin, you must remove any containers you previously ran for this
 guide. To stop and remove a container, either:
 
-- In a terminal, run `docker remove --force my-mysql` to remove the container
+- In a terminal, run `docker rm --force my-mysql` to remove the container
   named `my-mysql`.
 - Or, in the Docker Desktop Dashboard, select the **Delete** icon next to your
   container in the **Containers** view.

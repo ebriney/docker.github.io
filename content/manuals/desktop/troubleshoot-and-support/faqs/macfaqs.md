@@ -6,39 +6,24 @@ linkTitle: Mac
 tags: [FAQ]
 aliases:
 - /desktop/mac/space/
-- /docker-for-mac/space/
 - /desktop/faqs/macfaqs/
 weight: 20
 ---
 
-### Why do I keep getting a notification telling me an application has changed my Desktop configurations?
-
-You receive this notification because the Configuration integrity check feature has detected that a third-party application has altered your Docker Desktop configuration. This usually happens due to incorrect or missing symlinks. The notification ensures you are aware of these changes so you can review and repair any potential issues to maintain system reliability.
-
-Opening the notification presents a pop-up window which provides detailed information about the detected integrity issues.
-
-If you choose to ignore the notification, it will be shown again only at the next Docker Desktop startup. If you choose to repair your configuration, you won't be prompted again.
-
-If you want to switch off Configuration integrity check notifications, navigate to Docker Desktop's settings and in the **General** tab, clear the **Automatically check configuration** setting. 
-
-If you have feedback on how to further improve the Configuration integrity check feature, [fill out the feedback form](https://docs.google.com/forms/d/e/1FAIpQLSeD_Odqc__4ihRXDtH_ba52QJuaKZ00qGnNa_tM72MmH32CZw/viewform).
-
 ### What is HyperKit?
 
-HyperKit is a hypervisor built on top of the Hypervisor.framework in macOS. It runs entirely in userspace and has no other dependencies.
+HyperKit is a legacy hypervisor built on top of Hypervisor.framework in macOS.
+Previous versions of Docker Desktop for Mac used HyperKit to run the Linux VM.
 
-We use HyperKit to eliminate the need for other VM products, such as Oracle
-VirtualBox or VMWare Fusion.
+Current versions of Docker Desktop use the Apple Virtualization framework by
+default. HyperKit is retained here as historical context for older
+configurations.
 
 ### What is the benefit of HyperKit?
 
-HyperKit is thinner than VirtualBox and VMWare fusion, and the version included is customized for Docker workloads on Mac.
-
-### Why is com.docker.vmnetd still running after I quit the app?
-
-The privileged helper process `com.docker.vmnetd` is started by `launchd` and
-runs in the background. The process does not consume any resources unless
-`Docker.app` connects to it, so it's safe to ignore.
+When HyperKit was the default hypervisor, it provided a lightweight
+virtualization layer customized for Docker workloads and eliminated the need
+for third-party VM products such as Oracle VirtualBox or VMware Fusion.
 
 ### Where does Docker Desktop store Linux containers and images? 
 
@@ -66,7 +51,7 @@ To move the disk image file to a different location:
 
 2. In the **Disk image location** section, select **Browse** and choose a new location for the disk image.
 
-3. Select **Apply & Restart** for the changes to take effect.
+3. Select **Apply** for the changes to take effect.
 
 > [!IMPORTANT]
 >
@@ -130,7 +115,7 @@ To reduce the maximum size of the disk image file:
 
 2. The **Disk image size** section contains a slider that allows you to change the maximum size of the disk image. Adjust the slider to set a lower limit.
 
-3. Select **Apply & Restart**.
+3. Select **Apply**.
 
 When you reduce the maximum size, the current disk image file is deleted, and therefore, all containers and images are lost.
 

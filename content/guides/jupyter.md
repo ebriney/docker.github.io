@@ -5,11 +5,10 @@ title: Data science with JupyterLab
 toc_max: 2
 summary: |
   Use Docker to run Jupyter notebooks.
-tags: [data-science]
-languages: [python]
 aliases:
   - /guides/use-case/jupyter/
 params:
+  tags: [ai]
   time: 20 minutes
 ---
 
@@ -352,7 +351,7 @@ To share your image and data, you'll use [Docker Hub](https://hub.docker.com/). 
 
 ### Share your image
 
-1. [Sign up](https://www.docker.com/pricing?utm_source=docker&utm_medium=webreferral&utm_campaign=docs_driven_upgrade) or sign in to [Docker Hub](https://hub.docker.com).
+1. [Sign up](https://www.docker.com/pricing?ref=Docs&refAction=DocsGuidesJupyter) or sign in to [Docker Hub](https://hub.docker.com).
 
 2. Rename your image so that Docker knows which repository to push it to. Open a
    terminal and run the following `docker tag` command. Replace `YOUR-USER-NAME`
@@ -371,7 +370,7 @@ To share your image and data, you'll use [Docker Hub](https://hub.docker.com/). 
 
 4. Verify that you pushed the image to Docker Hub.
    1. Go to [Docker Hub](https://hub.docker.com).
-   2. Select **Repositories**.
+   2. Select **My Hub** > **Repositories**.
    3. View the **Last pushed** time for your repository.
 
 Other users can now download and run your image using the `docker run` command. They need to replace `YOUR-USER-NAME` with your Docker ID.
@@ -395,7 +394,7 @@ This example uses the Docker Desktop graphical user interface. Alternatively, in
 8. Select **Save**.
 9. Verify that you exported the volume to Docker Hub.
    1. Go to [Docker Hub](https://hub.docker.com).
-   2. Select **Repositories**.
+   2. Select **My Hub** > **Repositories**.
    3. View the **Last pushed** time for your repository.
 
 Other users can now download and import your volume. To import the volume and then run it with your image:

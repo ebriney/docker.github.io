@@ -1,6 +1,7 @@
 ---
-title: Networks top-level elements
-description: Explore all the attributes the networks top-level element can have.
+linkTitle: Networks
+title: Define and manage networks in Docker Compose
+description: Learn how to configure and control networks using the top-level networks element in Docker Compose.
 keywords: compose, compose specification, networks, compose file reference
 aliases:
  - /compose/compose-file/06-networks/
@@ -45,7 +46,7 @@ services:
       - frontend
       - backend
   db:
-    image: postgres
+    image: postgres:18
     networks:
       - backend
 
@@ -60,9 +61,56 @@ networks:
     driver: custom-driver
 ```
 
-The advanced example shows a Compose file which defines two custom networks. The `proxy` service is isolated from the `db` service, because they do not share a network in common. Only `app` can talk to both.
+This example shows a Compose file which defines two custom networks. The `proxy` service is isolated from the `db` service, because they do not share a network in common. Only `app` can talk to both.
+
+## The default network
+
+When a Compose file doesn't declare explicit networks, Compose uses an implicit `default` network. Services without an explicit [`networks`](services.md#networks) declaration are connected by Compose to this `default` network:
+
+
+```yml
+services:
+  some-service:
+    image: foo
+```
+This example is actually equivalent to:
+
+```yml
+services:
+  some-service:
+    image: foo
+    networks:
+      default: {}  
+networks:
+  default: {}      
+```
+
+You can customize the `default` network with an explicit declaration:
+
+```yml
+networks:
+  default: 
+    name: a_network # Use a custom name
+    driver_opts:    # pass options to driver for network creation
+      com.docker.network.bridge.host_binding_ipv4: 127.0.0.1
+```
+
+For options, see the [Docker Engine docs](https://docs.docker.com/engine/network/drivers/bridge/#options).
 
 ## Attributes
+
+### `attachable`
+
+If `attachable` is set to `true`, then standalone containers should be able to attach to this network, in addition to services.
+If a standalone container attaches to the network, it can communicate with services and other standalone containers
+that are also attached to the network.
+
+```yml
+networks:
+  mynet1:
+    driver: overlay
+    attachable: true
+```
 
 ### `driver`
 
@@ -92,22 +140,28 @@ networks:
 
 Consult the [network drivers documentation](/manuals/engine/network/_index.md) for more information.
 
-### `attachable`
+### `enable_ipv4`
 
-If `attachable` is set to `true`, then standalone containers should be able to attach to this network, in addition to services.
-If a standalone container attaches to the network, it can communicate with services and other standalone containers
-that are also attached to the network.
+{{< summary-bar feature_name="Compose enable ipv4" >}}
+
+`enable_ipv4` can be used to disable IPv4 address assignment.
 
 ```yml
-networks:
-  mynet1:
-    driver: overlay
-    attachable: true
+  networks:
+    ip6net:
+      enable_ipv4: false
+      enable_ipv6: true
 ```
 
 ### `enable_ipv6`
 
-`enable_ipv6` enables IPv6 networking. For an example, see step four of [Create an IPv6 network](/manuals/engine/daemon/ipv6.md).
+`enable_ipv6` enables IPv6 address assignment.
+
+```yml
+  networks:
+    ip6net:
+      enable_ipv6: true
+```
 
 ### `external`
 
@@ -117,7 +171,7 @@ Compose doesn't attempt to create these networks, and returns an error if one do
  - All other attributes apart from name are irrelevant. If Compose detects any other attribute, it rejects the Compose file as invalid.
 
 In the following example, `proxy` is the gateway to the outside world. Instead of attempting to create a network, Compose
-queries the platform for an existing network simply called `outside` and connects the
+queries the platform for an existing network called `outside` and connects the
 `proxy` service's containers to it.
 
 ```yml

@@ -1,21 +1,29 @@
 module github.com/docker/docs
 
-go 1.23.1
+go 1.26.5
 
+// This go.mod file is used by hugo to vendor documentation from upstream
+// repositories. Use the "require" section to specify the version of the
+// upstream repository.
+//
+// Make sure to add an entry in the "tools" section when adding a new repository.
 require (
-	github.com/docker/buildx v0.20.1 // indirect
-	github.com/docker/cli v27.5.1+incompatible // indirect
-	github.com/docker/compose/v2 v2.32.4 // indirect
-	github.com/docker/scout-cli v1.15.0 // indirect
-	github.com/moby/buildkit v0.19.0 // indirect
-	github.com/moby/moby v27.5.1+incompatible // indirect
+	github.com/docker/buildx v0.36.1
+	github.com/docker/cli v29.7.2+incompatible
+	github.com/docker/compose/v5 v5.5.0
+	github.com/docker/docker-agent v1.127.0
+	github.com/docker/model-runner v1.1.36
+	github.com/moby/buildkit v0.32.2
+	github.com/moby/moby/api v1.55.0
 )
 
-replace (
-	github.com/docker/buildx => github.com/docker/buildx v0.20.1
-	github.com/docker/cli => github.com/docker/cli v27.5.1+incompatible
-	github.com/docker/compose/v2 => github.com/docker/compose/v2 v2.32.4
-	github.com/docker/scout-cli => github.com/docker/scout-cli v1.15.0
-	github.com/moby/buildkit => github.com/moby/buildkit v0.19.0
-	github.com/moby/moby => github.com/moby/moby v27.5.1+incompatible
+tool (
+	github.com/docker/buildx
+	github.com/docker/cli
+	github.com/docker/compose/v5
+	github.com/docker/docker-agent
+	github.com/docker/model-runner
+	github.com/docker/scout-cli
+	github.com/moby/buildkit
+	github.com/moby/moby/api
 )

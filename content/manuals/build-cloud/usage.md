@@ -45,11 +45,11 @@ Changing your default builder with `docker buildx use` only changes the default
 builder for the `docker buildx build` command. The `docker build` command still
 uses the `default` builder, unless you specify the `--builder` flag explicitly.
 
-If you use build scripts, such as `make`, we recommend that you update your
-build commands from `docker build` to `docker buildx build`, to avoid any
-confusion with regards to builder selection. Alternatively, you can run `docker
-buildx install` to make the default `docker build` command behave like `docker
-buildx build`, without discrepancies.
+If you use build scripts, such as `make`, that use the `docker build` command,
+we recommend updating your build commands to `docker buildx build`. Alternatively,
+you can set the [`BUILDX_BUILDER` environment
+variable](/manuals/build/building/variables.md#buildx_builder) to specify which
+builder `docker build` should use.
 
 ## Use with Docker Compose
 
@@ -144,7 +144,7 @@ The traffic is encrypted and secrets are never stored in the build cache.
 >
 > If you're misusing build arguments to pass credentials, authentication
 > tokens, or other secrets, you should refactor your build to pass the secrets using
-> [secret mounts](/reference/cli/docker/buildx/build.md#secret) instead.
+> [secret mounts](/reference/cli/docker/buildx/build/#secret) instead.
 > Build arguments are stored in the cache and their values are exposed through attestations.
 > Secret mounts don't leak outside of the build and are never included in attestations.
 
@@ -186,13 +186,5 @@ It only changes the builder that's automatically selected to run your builds.
 
 ## Registries on internal networks
 
-It isn't possible to use Docker Build Cloud with a private registry
-or registry mirror on an internal network behind a VPN.
-All endpoints that a cloud builder interacts with,
-including OCI registries, must be accessible over the internet.
-
-> **Interested in trying out an experimental feature?**
->
->We are currently testing an experimental feature which lets cloud builders access internal resources. 
->
-> If you're interested in trying this feature, contact us using the [Support form](https://hub.docker.com/support/contact?topic=Docker+Build+Cloud&subject=Private+registry+access).
+It is possible to use Docker Build Cloud with a [private registry](/manuals/build-cloud/builder-settings.md#private-resource-access)
+or registry mirror on an internal network.

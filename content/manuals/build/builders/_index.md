@@ -69,35 +69,29 @@ selected when you invoke builds.
 
 Even though `docker build` is an alias for `docker buildx build`, there are
 subtle differences between the two commands. With Buildx, the build client and
-the and daemon (BuildKit) are decoupled. This means you can use multiple
+the daemon (BuildKit) are decoupled. This means you can use multiple
 builders from a single client, even remote ones.
 
 The `docker build` command always defaults to using the default builder that
-comes bundled with the Docker Engine, for ensuring backwards compatibility with
+comes bundled with the Docker Engine, to ensure backwards compatibility with
 older versions of the Docker CLI. The `docker buildx build` command, on the
 other hand, checks whether you've set a different builder as the default
 builder before it sends your build to BuildKit.
 
-To use the `docker build` command with a non-default builder, you must either:
+To use the `docker build` command with a non-default builder, you must either
+specify the builder explicitly:
 
-- Specify the builder explicitly, using the `--builder` flag or the `BUILDX_BUILDER` environment variable:
+- Using the `--builder` flag:
 
   ```console
-  $ BUILDX_BUILDER=my_builder docker build .
   $ docker build --builder my_builder .
   ```
 
-- Configure Buildx as the default client by running the following command:
+- Or the `BUILDX_BUILDER` environment variable:
 
   ```console
-  $ docker buildx install
+  $ BUILDX_BUILDER=my_builder docker build .
   ```
-
-  This updates your [Docker CLI configuration file](/reference/cli/docker/_index.md#configuration-files)
-  to ensure all of your build-related commands are routed via Buildx.
-
-  > [!TIP]
-  > To undo this change, run `docker buildx uninstall`.
 
 <!-- vale Docker.We = NO -->
 

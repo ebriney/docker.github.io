@@ -1,52 +1,63 @@
 ---
 title: Billing FAQs
 linkTitle: FAQs
-description: Frequently asked questions related to billing
-keywords: billing, renewal, payments, faq
+description: Find answers to common questions about Docker billing, failed payments, taxes, and pay by invoice.
+keywords: billing, renewal, failed payments, sales tax, VAT, academic pricing, pay by invoice
 tags: [FAQ]
-weight: 60
+weight: 80
 ---
 
-### What credit and debit cards are supported?
+## What happens if my subscription payment fails?
 
-- Visa
-- MasterCard
-- American Express
-- Discover
-- JCB
-- Diners
-- UnionPay
-
-### What currency is supported?
-
-United States dollar (USD).
-
-### What happens if my subscription payment fails?
-
-If your subscription payment fails, there is a grace period of 15 days, including the due date. Docker retries to collect the payment 3 times using the following schedule:
+If your subscription payment fails, there is a grace period of 15 days,
+including the due date. Docker attempts to collect the payment three times using
+the following schedule:
 
 - 3 days after the due date
 - 5 days after the previous attempt
 - 7 days after the previous attempt
 
-Docker also sends an email notification `Action Required - Credit Card Payment Failed` with an attached unpaid invoice after each failed payment attempt.
+Docker also sends an email notification
+`Action Required - Credit Card Payment Failed` with an attached unpaid invoice
+after each failed payment attempt.
 
-Once the grace period is over and the invoice is still not paid, the subscription downgrades to a free plan and all paid features are disabled.
+If the invoice remains unpaid after the grace period, the
+subscription downgrades to a free subscription and all paid features are
+disabled.
 
-### Does Docker collect sales tax and/or VAT?
+## Can I manually retry a failed payment?
 
-Docker began collecting sales tax on subscription fees for United States customers on July 1, 2024. For European customers, Docker will begin collecting VAT on March 1, 2025.
+Yes. If your payment fails, select **Pay now** to retry the payment through
+Stripe.
 
-To ensure that tax assessments are correct, make sure that your billing information and VAT/Tax ID, if applicable, are updated. See [Update the billing information](/billing/details/).
+Before retrying, verify that your default payment method is up to date. For
+instructions, see
+[Manage a payment method](/manuals/billing/payment-method.md#manage-payment-method).
 
-### How do I certify my tax exempt status?
+## Does Docker collect sales tax and VAT?
 
-If you're exempt from sales tax, you can [register a valid tax exemption certificate](./tax-certificate.md) with Docker's Support team. [Contact Support](https://hub.docker.com/support/contact) to get started.
+Docker collects sales tax or VAT from the following customers:
 
-### Does Docker offer academic pricing?
+- For United States customers, Docker began collecting sales tax on
+  July 1, 2024.
+- For European customers, Docker began collecting VAT on March 1, 2025.
+- For United Kingdom customers, Docker began collecting VAT on May 1, 2025.
 
-Contact the [Docker Sales Team](https://www.docker.com/company/contact).
+To help ensure correct tax assessments, keep your
+[billing information](/manuals/billing/details.md) up to date. For details on
+adding a VAT number or submitting a US tax exemption certificate, see
+[Taxes](/manuals/billing/tax-certificate.md).
 
-### Do I need to do anything at the end of my subscription term?
+## Does Docker offer academic pricing?
 
-No. All monthly and annual subscriptions are automatically renewed at the end of the term using the original form of payment.
+For academic pricing, contact the
+[Docker Sales Team](https://www.docker.com/company/contact).
+
+## Can I use pay by invoice for upgrades or additional seats?
+
+No. Pay by invoice is only available for renewing annual subscriptions, not for
+purchasing upgrades or additional seats. You must use card payment or US bank
+accounts for these changes.
+
+For a list of supported payment methods, see
+[Add or update a payment method](/manuals/billing/payment-method.md).

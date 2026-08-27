@@ -10,7 +10,7 @@ aliases:
 ---
 
 Build drivers are configurations for how and where the BuildKit backend runs.
-Driver settings are customizable and allows fine-grained control of the builder.
+Driver settings are customizable and allow fine-grained control of the builder.
 Buildx supports the following drivers:
 
 - `docker`: uses the BuildKit library bundled into the Docker daemon.
@@ -28,7 +28,7 @@ The following table outlines some differences between drivers.
 | Feature                      |  `docker`   | `docker-container` | `kubernetes` |      `remote`      |
 | :--------------------------- | :---------: | :----------------: | :----------: | :----------------: |
 | **Automatically load image** |     ✅      |                    |              |                    |
-| **Cache export**             |     ✓\*     |         ✅         |      ✅      |         ✅         |
+| **Cache export**             |     ✅\*     |         ✅         |      ✅      |         ✅         |
 | **Tarball output**           |             |         ✅         |      ✅      |         ✅         |
 | **Multi-arch images**        |             |         ✅         |      ✅      |         ✅         |
 | **BuildKit configuration**   |             |         ✅         |      ✅      | Managed externally |

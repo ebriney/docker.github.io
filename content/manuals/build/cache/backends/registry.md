@@ -18,8 +18,9 @@ everything that the inline cache can do, and more:
 - It works with other exporters for more flexibility, instead of only the
   `image` exporter.
 
-This cache storage backend is not supported with the default `docker` driver.
-To use this feature, create a new builder using a different driver. See
+This cache storage backend works with the default `docker` driver only when the
+[containerd image store](/manuals/desktop/features/containerd.md) is enabled. If
+the containerd image store isn't enabled, use a different driver. See
 [Build drivers](/manuals/build/builders/drivers/_index.md) for more information.
 
 ## Synopsis
@@ -37,11 +38,11 @@ The following table describes the available CSV parameters that you can pass to
 `--cache-to` and `--cache-from`.
 
 | Name                | Option                  | Type                    | Default | Description                                                                                                                     |
-| ------------------- | ----------------------- | ----------------------- | ------- | ------------------------------------------------------------------------------------------------------------------------------- |
+|---------------------|-------------------------|-------------------------|---------|---------------------------------------------------------------------------------------------------------------------------------|
 | `ref`               | `cache-to`,`cache-from` | String                  |         | Full name of the cache image to import.                                                                                         |
 | `mode`              | `cache-to`              | `min`,`max`             | `min`   | Cache layers to export, see [cache mode][1].                                                                                    |
 | `oci-mediatypes`    | `cache-to`              | `true`,`false`          | `true`  | Use OCI media types in exported manifests, see [OCI media types][2].                                                            |
-| `image-manifest`    | `cache-to`              | `true`,`false`          | `false` | When using OCI media types, generate an image manifest instead of an image index for the cache image, see [OCI media types][2]. |
+| `image-manifest`    | `cache-to`              | `true`,`false`          | `true`  | When using OCI media types, generate an image manifest instead of an image index for the cache image, see [OCI media types][2]. |
 | `compression`       | `cache-to`              | `gzip`,`estargz`,`zstd` | `gzip`  | Compression type, see [cache compression][3].                                                                                   |
 | `compression-level` | `cache-to`              | `0..22`                 |         | Compression level, see [cache compression][3].                                                                                  |
 | `force-compression` | `cache-to`              | `true`,`false`          | `false` | Forcibly apply compression, see [cache compression][3].                                                                         |

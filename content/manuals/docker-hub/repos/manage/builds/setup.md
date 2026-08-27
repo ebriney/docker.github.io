@@ -10,6 +10,10 @@ aliases:
 - /docker-hub/builds/
 ---
 
+> [!WARNING]
+> Docker Hub Automated Builds is a deprecated feature.
+> It will be fully retired on April 1, 2027.
+
 > [!NOTE]
 >
 > Automated builds require a
@@ -22,7 +26,7 @@ build an image each time you push new code to your source provider. If you have
 [automated tests](automated-testing.md) configured, the new image is only pushed
 when the tests succeed.
 
-1. From the **Repositories** section, select a repository to view its details.
+1. In [Docker Hub](https://hub.docker.com), go to **My Hub** > **Repositories**, and select a repository to view its details.
 
 2. Select the **Builds** tab.
 
@@ -30,8 +34,8 @@ when the tests succeed.
 
    > [!NOTE]
    >
-   > You may be redirected to the settings page to [link](link-source.md) the
-   > code repository service. Otherwise, if you are editing the build settings
+   > You may be redirected to the settings page to [link the code repository
+   > service](link-source.md). Otherwise, if you are editing the build settings
    > for an existing automated build, select **Configure automated builds**.
 
 4. Select the **source repository** to build the Docker images from.
@@ -150,11 +154,11 @@ destination Docker tag to set up an automated build. You can also:
 create dynamic tags
 
 All of these options are available from the **Build configuration** screen for
-each repository. Select **Repositories** from the left navigation, and select the name of the repository you want to edit. Select the **Builds** tab, and then select **Configure Automated builds**.
+each repository. In [Docker Hub](https://hub.docker.com), select **My Hub** > **Repositories**, and select the name of the repository you want to edit. Select the **Builds** tab, and then select **Configure Automated builds**.
 
 ### Tag and branch builds
 
-You can configure your automated builds so that pushes to specific branches or tags triggers a build.
+You can configure your automated builds so that pushes to specific branches or tags trigger a build.
 
 1. In the **Build Rules** section, select the **plus** icon to add more sources to build.
 
@@ -170,7 +174,7 @@ You can configure your automated builds so that pushes to specific branches or t
     > [!NOTE]
     >
     > You can enter a name, or use a regex to match which source branch or tag
-    > names to build. To learn more, see [regexes](index.md#regexes-and-automated-builds).
+    > names to build. To learn more, see [regexes](#regexes-and-automated-builds).
 
 4. Enter the tag to apply to Docker images built from this source.
 
@@ -178,7 +182,7 @@ You can configure your automated builds so that pushes to specific branches or t
    >
    > If you configured a regex to select the source, you can reference the
    > capture groups and use its result as part of the tag. To learn more, see
-   > [regexes](index.md#regexes-and-automated-builds).
+   > [regexes](#regexes-and-automated-builds).
 
 5. Repeat steps 2 through 4 for each new build rule you set up.
 

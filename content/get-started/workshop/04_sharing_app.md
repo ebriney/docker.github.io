@@ -23,7 +23,7 @@ registry. The default registry is Docker Hub and is where all of the images you'
 
 To push an image, you first need to create a repository on Docker Hub.
 
-1. [Sign up](https://www.docker.com/pricing?utm_source=docker&utm_medium=webreferral&utm_campaign=docs_driven_upgrade) or Sign in to [Docker Hub](https://hub.docker.com).
+1. [Sign up](https://www.docker.com/pricing?ref=Docs&refAction=DocsSharingApp) or Sign in to [Docker Hub](https://hub.docker.com).
 
 2. Select the **Create Repository** button.
 
@@ -38,8 +38,15 @@ In the following image, you can see an example Docker command from Docker Hub. T
 
 ## Push the image
 
-1. In the command line, run the `docker push` command that you see on Docker
-   Hub. Note that your command will have your Docker ID, not "docker". For example, `docker push YOUR-USER-NAME/getting-started`.
+Let's try to push the image to Docker Hub.
+
+1. In the command line, run the following command:
+
+   ```console
+   docker push docker/getting-started
+   ```
+
+   You'll see an error like this:
 
    ```console
    $ docker push docker/getting-started
@@ -47,13 +54,17 @@ In the following image, you can see an example Docker command from Docker Hub. T
    An image does not exist locally with the tag: docker/getting-started
    ```
 
-    Why did it fail? The push command was looking for an image named `docker/getting-started`, but
-    didn't find one. If you run `docker image ls`, you won't see one either.
+   This failure is expected because the image isn't tagged correctly yet.
+   Docker is looking for an image name `docker/getting-started`, but your
+   local image is still named `getting-started`.
 
-    To fix this, you need to tag your existing image you've built to give it another name.
+   You can confirm this by running:
 
-2. Sign in to Docker Hub using the command `docker login -u YOUR-USER-NAME`.
+   ```console
+   docker image ls
+   ```
 
+2. To fix this, first sign in to Docker Hub using your Docker ID: `docker login -u YOUR-USER-NAME`.
 3. Use the `docker tag` command to give the `getting-started` image a new name. Replace `YOUR-USER-NAME` with your Docker ID.
 
    ```console
@@ -70,55 +81,7 @@ In the following image, you can see an example Docker command from Docker Hub. T
 
 ## Run the image on a new instance
 
-Now that your image has been built and pushed into a registry, try running your app on a brand
-new instance that has never seen this container image. To do this, you will use Play with Docker.
-
-> [!NOTE]
->
-> Play with Docker uses the amd64 platform. If you are using an ARM based Mac with Apple silicon, you will need to rebuild the image to be compatible with Play with Docker and push the new image to your repository.
->
-> To build an image for the amd64 platform, use the `--platform` flag.
-> ```console
-> $ docker build --platform linux/amd64 -t YOUR-USER-NAME/getting-started .
-> ```
->
-> Docker buildx also supports building multi-platform images. To learn more, see [Multi-platform images](/manuals/build/building/multi-platform.md).
-
-
-1. Open your browser to [Play with Docker](https://labs.play-with-docker.com/).
-
-2. Select **Login** and then select **docker** from the drop-down list.
-
-3. Sign in with your Docker Hub account and then select **Start**.
-
-4. Select the **ADD NEW INSTANCE** option on the left side bar. If you don't see it, make your browser a little wider. After a few seconds, a terminal window opens in your browser.
-
-    ![Play with Docker add new instance](images/pwd-add-new-instance.webp)
-
-5. In the terminal, start your freshly pushed app.
-
-   ```console
-   $ docker run -dp 0.0.0.0:3000:3000 YOUR-USER-NAME/getting-started
-   ```
-
-    You should see the image get pulled down and eventually start up.
-
-    > [!TIP]
-    >
-    > You may have noticed that this command binds the port mapping to a
-    > different IP address. Previous `docker run` commands published ports to
-    > `127.0.0.1:3000` on the host. This time, you're using `0.0.0.0`.
-    >
-    > Binding to `127.0.0.1` only exposes a container's ports to the loopback
-    > interface. Binding to `0.0.0.0`, however, exposes the container's port
-    > on all interfaces of the host, making it available to the outside world.
-    >
-    > For more information about how port mapping works, see
-    > [Networking](/manuals/engine/network/_index.md#published-ports).
-
-6. Select the 3000 badge when it appears.
-
-   If the 3000 badge doesn't appear, you can select **Open Port** and specify `3000`.
+Now that your image has been built and pushed into a registry, you can run your app on any machine that has Docker installed. Try pulling and running your image on another computer or a cloud instance.
 
 ## Summary
 

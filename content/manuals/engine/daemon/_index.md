@@ -84,6 +84,33 @@ $ dockerd --debug \
   --host tcp://192.168.59.3:2376
 ```
 
+#### Listen on a Unix socket on Windows
+
+Starting with Docker Engine 29.5, you can configure `dockerd` on Windows to
+listen on a Unix socket. This setting is optional. The default Windows endpoint
+remains the `npipe` named pipe.
+
+Run `dockerd` from an elevated PowerShell session:
+
+```powershell
+PS C:\> dockerd -H unix://C:/Users/<USER>/docker.sock --group docker-users
+```
+
+Replace `<USER>` with the name of your Windows user profile directory.
+Without `--group`, only members of the Administrators group and the `SYSTEM`
+account can access the socket. Use a comma-separated list to grant access to
+multiple users or groups.
+
+Use a path in the user profile when granting access with `--group`. A socket
+created directly under `C:\` can inherit a high integrity level that blocks
+access for the configured users and groups.
+
+Configure the Docker client to use the same socket:
+
+```powershell
+PS C:\> docker -H unix://C:/Users/<USER>/docker.sock info
+```
+
 Learn about the available configuration options in the
 [dockerd reference docs](/reference/cli/dockerd.md), or by
 running:
@@ -98,13 +125,24 @@ The Docker daemon persists all data in a single directory. This tracks
 everything related to Docker, including containers, images, volumes, service
 definition, and secrets.
 
-By default this directory is:
+By default the daemon stores data in:
 
-- `/var/lib/docker` on Linux.
-- `C:\ProgramData\docker` on Windows.
+- `/var/lib/docker` on Linux
+- `C:\ProgramData\docker` on Windows
 
-You can configure the Docker daemon to use a different directory, using the
-`data-root` configuration option. For example:
+When using the [containerd image store](/manuals/engine/storage/containerd.md)
+(the default for Docker Engine 29.0 and later on fresh installations), image
+contents and container snapshots are stored in `/var/lib/containerd`. Other
+daemon data (volumes, configs) remains in `/var/lib/docker`.
+
+When using [classic storage drivers](/manuals/engine/storage/drivers/_index.md)
+like `overlay2` (the default for upgraded installations), all data is stored in
+`/var/lib/docker`.
+
+### Configure the data directory location
+
+You can configure the Docker daemon to use a different storage directory using
+the `data-root` configuration option.
 
 ```json
 {
@@ -112,10 +150,19 @@ You can configure the Docker daemon to use a different directory, using the
 }
 ```
 
-Since the state of a Docker daemon is kept on this directory, make sure you use
-a dedicated directory for each daemon. If two daemons share the same directory,
-for example, an NFS share, you are going to experience errors that are difficult
-to troubleshoot.
+The `data-root` option does not affect image and container data stored in
+`/var/lib/containerd` when using the containerd image store. To change the
+storage location of containerd snapshotters, use the system containerd
+configuration file:
+
+```toml {title="/etc/containerd/config.toml"}
+version = 2
+root = "/mnt/containerd-data"
+```
+
+Make sure you use a dedicated directory for each daemon. If two daemons share
+the same directory, for example an NFS share, you will experience errors that
+are difficult to troubleshoot.
 
 ## Next steps
 

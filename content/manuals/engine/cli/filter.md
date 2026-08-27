@@ -30,15 +30,15 @@ output of the `docker images` command to only print `alpine` images.
 ```console
 $ docker images
 REPOSITORY   TAG       IMAGE ID       CREATED          SIZE
-ubuntu       20.04     33a5cc25d22c   36 minutes ago   101MB
-ubuntu       18.04     152dc042452c   36 minutes ago   88.1MB
-alpine       3.16      a8cbb8c69ee7   40 minutes ago   8.67MB
+ubuntu       24.04     33a5cc25d22c   36 minutes ago   101MB
+ubuntu       22.04     152dc042452c   36 minutes ago   88.1MB
+alpine       3.21      a8cbb8c69ee7   40 minutes ago   8.67MB
 alpine       latest    7144f7bab3d4   40 minutes ago   11.7MB
 busybox      uclibc    3e516f71d880   48 minutes ago   2.4MB
 busybox      glibc     7338d0c72c65   48 minutes ago   6.09MB
 $ docker images --filter reference=alpine
 REPOSITORY   TAG       IMAGE ID       CREATED          SIZE
-alpine       3.16      a8cbb8c69ee7   40 minutes ago   8.67MB
+alpine       3.21      a8cbb8c69ee7   40 minutes ago   8.67MB
 alpine       latest    7144f7bab3d4   40 minutes ago   11.7MB
 ```
 
@@ -58,9 +58,9 @@ following example shows how to print all images that match `alpine:latest` or
 ```console
 $ docker images
 REPOSITORY   TAG       IMAGE ID       CREATED       SIZE
-ubuntu       20.04     33a5cc25d22c   2 hours ago   101MB
-ubuntu       18.04     152dc042452c   2 hours ago   88.1MB
-alpine       3.16      a8cbb8c69ee7   2 hours ago   8.67MB
+ubuntu       24.04     33a5cc25d22c   2 hours ago   101MB
+ubuntu       22.04     152dc042452c   2 hours ago   88.1MB
+alpine       3.21      a8cbb8c69ee7   2 hours ago   8.67MB
 alpine       latest    7144f7bab3d4   2 hours ago   11.7MB
 busybox      uclibc    3e516f71d880   2 hours ago   2.4MB
 busybox      glibc     7338d0c72c65   2 hours ago   6.09MB
@@ -95,21 +95,21 @@ $ docker container prune --filter "label!=foo" --filter "label!=bar"
 For more information about filtering commands, refer to the CLI reference
 description for commands that support the `--filter` flag:
 
-- [`docker config ls`](/reference/cli/docker/config/ls.md)
-- [`docker container prune`](/reference/cli/docker/container/prune.md)
-- [`docker image prune`](/reference/cli/docker/image/prune.md)
-- [`docker image ls`](/reference/cli/docker/image/ls.md)
-- [`docker network ls`](/reference/cli/docker/network/ls.md)
-- [`docker network prune`](/reference/cli/docker/network/prune.md)
-- [`docker node ls`](/reference/cli/docker/node/ls.md)
-- [`docker node ps`](/reference/cli/docker/node/ps.md)
-- [`docker plugin ls`](/reference/cli/docker/plugin/ls.md)
-- [`docker container ls`](/reference/cli/docker/container/ls.md)
-- [`docker search`](/reference/cli/docker/search.md)
-- [`docker secret ls`](/reference/cli/docker/secret/ls.md)
-- [`docker service ls`](/reference/cli/docker/service/ls.md)
-- [`docker service ps`](/reference/cli/docker/service/ps.md)
-- [`docker stack ps`](/reference/cli/docker/stack/ps.md)
-- [`docker system prune`](/reference/cli/docker/system/prune.md)
-- [`docker volume ls`](/reference/cli/docker/volume/ls.md)
-- [`docker volume prune`](/reference/cli/docker/volume/prune.md)
+- [`docker config ls`](/reference/cli/docker/config/ls/)
+- [`docker container prune`](/reference/cli/docker/container/prune/)
+- [`docker image prune`](/reference/cli/docker/image/prune/)
+- [`docker image ls`](/reference/cli/docker/image/ls/)
+- [`docker network ls`](/reference/cli/docker/network/ls/)
+- [`docker network prune`](/reference/cli/docker/network/prune/)
+- [`docker node ls`](/reference/cli/docker/node/ls/)
+- [`docker node ps`](/reference/cli/docker/node/ps/)
+- [`docker plugin ls`](/reference/cli/docker/plugin/ls/)
+- [`docker container ls`](/reference/cli/docker/container/ls/)
+- [`docker search`](/reference/cli/docker/search/)
+- [`docker secret ls`](/reference/cli/docker/secret/ls/)
+- [`docker service ls`](/reference/cli/docker/service/ls/)
+- [`docker service ps`](/reference/cli/docker/service/ps/)
+- [`docker stack ps`](/reference/cli/docker/stack/ps/)
+- [`docker system prune`](/reference/cli/docker/system/prune/)
+- [`docker volume ls`](/reference/cli/docker/volume/ls/)
+- [`docker volume prune`](/reference/cli/docker/volume/prune/)

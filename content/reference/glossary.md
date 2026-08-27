@@ -2,11 +2,11 @@
 title: Glossary
 description: Glossary of terms used around Docker
 keywords: glossary, docker, terms, definitions
-layout: glossary
 notoc: true
+layout: glossary
 aliases:
-- /engine/reference/glossary/
-- /glossary/
+  - /engine/reference/glossary/
+  - /glossary/
 ---
 
 <!--

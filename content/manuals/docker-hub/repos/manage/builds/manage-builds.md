@@ -6,6 +6,10 @@ aliases:
 - /docker-hub/builds/manage-builds/
 ---
 
+> [!WARNING]
+> Docker Hub Automated Builds is a deprecated feature.
+> It will be fully retired on April 1, 2027.
+
 > [!NOTE]
 >
 > Automated builds require a Docker Pro, Team, or Business subscription.
@@ -48,7 +52,7 @@ a while, for example when you are doing major refactoring in your code. Disablin
 
 To disable an automated build:
 
-1. From the **Repositories** page, select a repository, and select the **Builds** tab.
+1. In [Docker Hub](https://hub.docker.com), go to **My Hub** >  **Repositories**, select a repository, and select the **Builds** tab.
 
 2. Select **Configure automated builds** to edit the repository's build settings.
 

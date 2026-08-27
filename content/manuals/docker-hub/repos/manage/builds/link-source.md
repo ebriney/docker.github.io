@@ -11,6 +11,10 @@ aliases:
 - /docker-hub/builds/link-source/
 ---
 
+> [!WARNING]
+> Docker Hub Automated Builds is a deprecated feature.
+> It will be fully retired on April 1, 2027.
+
 > [!NOTE]
 >
 > Automated builds require a Docker Pro, Team, or Business subscription.
@@ -21,18 +25,15 @@ code service to Docker Hub so that it can access your source code
 repositories. You can configure this link for user accounts or
 organizations.
 
-If you are linking a source code provider to create autobuilds for a team, follow the instructions to [create a service account](index.md#service-users-for-team-autobuilds) for the team before linking the account as described below.
+If you are linking a source code provider to create autobuilds for a team, follow the instructions to [create a service account](setup.md#service-users-for-team-autobuilds) for the team before linking the account as described below.
 
 ## Link to a GitHub user account
 
 1. Sign in to Docker Hub.
 
-2. Select the **Settings** icon in the top-right navigation, then select **Repository Settings**.
+2. Select **My Hub** > **Settings** > **Linked accounts**.
 
-    ![Repository settings menu](./images/docker-hub-repo-settings-menu.png)
-
-
-3. From the **Linked accounts** tab, select **Link provider** for the source provider you want to link.
+3. Select **Link provider** for the source provider you want to link.
 
     If you want to unlink your current GitHub account and relink to a new GitHub account, make sure to completely sign out of [GitHub](https://github.com/) before linking via Docker Hub.
 
@@ -102,9 +103,9 @@ To revoke Docker Hub's access to an organization's GitHub repositories:
 To revoke Docker Hub's access to your GitHub account, you must unlink it both
 from Docker Hub, and from your GitHub account.
 
-1. Select the **Settings** icon in the top-right navigation, then select **Repository Settings**.
+1. Select **My Hub** > **Settings** > **Linked accounts**.
 
-2. From the **Linked accounts** tab, select the plug icon next to the source provider you want to remove.
+2. Select **Unlink provider** next to the source provider you want to remove.
 
 3. Go to your GitHub account's **Settings** page.
 
@@ -123,9 +124,9 @@ code provider.
 
 1. Sign in to Docker Hub using your Docker ID.
 
-2. Select the **Settings** icon in the top-right navigation, then select **Repository Settings**.
+2. Select **My Hub** > **Settings** > **Linked accounts**.
 
-3. From the **Linked accounts** tab, select **Link provider** for the source provider you want to link.
+3. Select **Link provider** for the source provider you want to link.
 
 4. If necessary, sign in to Bitbucket.
 
@@ -138,9 +139,9 @@ unlink it both from Docker Hub, and revoke authorization in your Bitbucket accou
 
 1. Sign in to Docker Hub.
 
-2. Select the **Settings** icon in the top-right navigation, then select **Repository Settings**.
+2. Select **My Hub** > **Settings** > **Linked accounts**.
 
-3. From the **Linked accounts** tab, select the **Plug** icon next to the source provider you want to remove.
+3. Select **Unlink provider** next to the source provider you want to remove.
 
 > [!IMPORTANT]
 > After unlinking the account on Docker Hub, you must also revoke the authorization on the Bitbucket end.

@@ -63,7 +63,7 @@ The following Docker Compose file bootstraps a set of services to get started wi
 It includes an OpenTelemetry collector that the CLI can send metrics to,
 and a Prometheus backend that scrapes the metrics off the collector.
 
-```yaml {collapse=true,title=compose.yml}
+```yaml {collapse=true,title=compose.yaml}
 name: cli-otel
 services:
   prometheus:
@@ -95,7 +95,7 @@ volumes:
 ```
 
 This service assumes that the following two configuration files exist alongside
-`compose.yml`:
+`compose.yaml`:
 
 - ```yaml {collapse=true,title=otelcol.yml}
   # Receive signals over gRPC and HTTP
@@ -155,7 +155,7 @@ With these files in place:
 
 ## Available metrics
 
-Docker CLI currently exports a single metric, `command.time`, which measures
+Docker CLI exports a single metric, `command.time`, which measures
 the execution duration of a command in milliseconds. This metric has the
 following attributes:
 

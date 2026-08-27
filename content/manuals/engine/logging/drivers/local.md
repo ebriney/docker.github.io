@@ -26,11 +26,11 @@ for each file and a default count of 5 for the number of such files (to account 
 ## Usage
 
 To use the `local` driver as the default logging driver, set the `log-driver`
-and `log-opt` keys to appropriate values in the `daemon.json` file, which is
-located in `/etc/docker/` on Linux hosts or
-`C:\ProgramData\docker\config\daemon.json` on Windows Server. For more about
-configuring Docker using `daemon.json`, see
+and `log-opt` keys to appropriate values in the `daemon.json` file. For more
+about configuring Docker using `daemon.json`, see
 [daemon.json](/reference/cli/dockerd.md#daemon-configuration-file).
+
+{{% include "daemon-cfg-desktop.md" %}}
 
 The following example sets the log driver to `local` and sets the `max-size`
 option.
@@ -64,7 +64,7 @@ The `local` logging driver supports the following logging options:
 
 | Option     | Description                                                                                                                                                   | Example value              |
 | :--------- | :------------------------------------------------------------------------------------------------------------------------------------------------------------ | :------------------------- |
-| `max-size` | The maximum size of the log before it's rolled. A positive integer plus a modifier representing the unit of measure (`k`, `m`, or `g`). Defaults to 20m.      | `--log-opt max-size=10m`   |
+| `max-size` | The maximum size of the log before it's rolled. A positive integer plus a unit modifier (`k`, `m`, or `g`; case-insensitive). Defaults to 20m.      | `--log-opt max-size=10m`   |
 | `max-file` | The maximum number of log files that can be present. If rolling the logs creates excess files, the oldest file is removed. A positive integer. Defaults to 5. | `--log-opt max-file=3`     |
 | `compress` | Toggle compression of rotated log files. Enabled by default.                                                                                                  | `--log-opt compress=false` |
 

@@ -5,11 +5,10 @@ title: Developing event-driven applications with Kafka and Docker
 linktitle: Event-driven apps with Kafka
 summary: |
   This guide explains how to run Apache Kafka in Docker containers.
-tags: [distributed-systems]
-languages: [js]
 aliases:
   - /guides/use-case/kafka/
 params:
+  tags: [deployment]
   time: 20 minutes
 ---
 
@@ -235,7 +234,7 @@ To add it to your own project (it’s already in the demo application), you only
 ```yaml
 services:
   kafka-ui:
-    image: ghcr.io/kafbat/kafka-ui:latest
+    image: kafbat/kafka-ui:main
     ports:
       - 8080:8080
     environment:

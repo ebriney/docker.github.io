@@ -1,42 +1,91 @@
 ---
-title: Register a tax certificate
-description: Learn how to submit a tax exemption certificate for your Docker billing.
-keywords: billing, renewal, payments, tax
-weight: 50
+title: Sales tax exemption and VAT
+linkTitle: Taxes
+description: >
+  Learn how Docker collects sales tax and VAT, how to submit a US tax
+  exemption certificate, and how to add a VAT number at checkout.
+keywords:
+  billing, sales tax, VAT, tax exemption certificate, tax ID, VAT number,
+  United States tax exemption, Docker Support, billing portal
+weight: 70
 ---
 
-If you're a customer in the United States and you're exempt from sales tax, you can register a valid tax exemption certificate with Docker's Support team. If you're a global customer subject to VAT, make sure that you provide your [VAT number](/billing/history/#include-your-vat-number-on-your-invoice).
+Depending on your location, Docker may collect sales tax or VAT on your
+subscription. Tax relief is the same idea in both cases, but the process
+differs:
 
-{{% include "tax-compliance.md" %}}
+- United States customers request exemption by submitting a tax exemption
+  certificate through Docker Support. The billing portal has no self-serve
+  tax ID field for US customers.
+- Customers in VAT countries enter a tax ID or VAT number themselves when they
+  purchase a Docker plan.
 
-## Prerequisites
+## United States tax exemption
 
-Before you submit your tax exemption certificate, ensure the following.
+US customers submit a support ticket with a valid tax exemption certificate
+to receive tax-exempt status. Docker reviews the certificate and applies the
+exemption to your billing profile. You can apply for tax-exempt status:
 
-1. Your customer name matches the name on the exemption certificate
-2. Your tax exemption certificate specifies Docker Inc as the Seller or Vendor and all applicable information is filled out
-3. Your certificate is signed and dated, and the expiration date hasn't passed
-4. You have a valid Docker ID/namespace(s) of the accounts that you want to apply the tax exemption certificate to
+- Before you purchase, submit your certificate and wait for Docker to approve
+  it. After approval, you can purchase without sales tax.
+- If you were charged sales tax, open a support ticket to coordinate with
+  Docker Support on exempt status.
 
-## Contact information
+### Prerequisites
 
-You can use the following for Docker's contact information on your tax exemption certificate.
+Before submitting your certificate, confirm the following:
 
-Docker, Inc.  
-3790 El Camino Real #1052  
-Palo Alto, CA 94306  
+- Customer name matches the name on the certificate.
+- The certificate lists Docker, Inc. as the seller or vendor, with all
+  relevant fields completed.
+- The certificate is signed, dated, and not expired.
+- You've included the Docker ID or namespace(s) for all accounts the
+  certificate applies to.
+
+> [!TIP]
+>
+> You can use the same certificate for multiple namespaces when applicable.
+
+### Contact information
+
+Use the following contact information on your certificate:
+
+```text
+Docker, Inc.
+3790 El Camino Real #1052
+Palo Alto, CA 94306
 (415) 941-0376
+```
 
-## Register a tax certificate
+### Submit a tax exemption certificate
 
-1. [Submit a Docker Support ticket](https://hub.docker.com/support/contact?topic=Billing&subtopic=Tax%20information) to initiate the process to register a tax certificate.
-2. Enter the required information.
-3. In the **Additional Information** field, list the Docker ID/namespace(s) of the accounts that you want to apply the tax exemption certificate to.
+1. [Submit a Docker Support ticket](https://hub.docker.com/support/contact?topic=Billing&subtopic=Tax%20information)
+   to start the tax certificate registration process.
+1. Enter **Tax certificate** as the support ticket **Subject**.
+1. In the **Details** field, enter **Submitting a tax certificate**.
+1. Follow the instructions that appear for submitting a tax certificate.
+1. Complete all required fields on the support form.
+1. In the file upload section, add the tax certificate by dragging and dropping
+   the file, or selecting **Browse files**.
+1. Select **Submit**.
 
-   > [!TIP]
-   >
-   > You can list multiple namespaces that share the same tax exemption certificate, if applicable.
-4. Add the tax certificate from your system by dragging and dropping them onto the file area, or select the **Browse Files** button to open a file dialog.
-5. Select **Submit**.
+Docker Support contacts you if additional information is required. Docker sends
+an email confirmation after applying the tax exemption status to your account.
 
-Docker's support team will reach out to you if any additional information is required. You'll receive an e-mail confirmation from Docker once your tax exemption status is applied to your account.
+## Add a VAT number or tax ID
+
+When you select a VAT-applicable country during checkout, a tax ID field
+appears. Customers in VAT countries enter their tax ID or VAT number
+during checkout without opening a support ticket.
+
+Your VAT number must include your country prefix. For example, enter
+`DE123456789` for a German VAT number.
+
+> [!NOTE]
+>
+> The tax ID field appears during checkout only when you select
+> **I'm purchasing as a business**. It doesn't appear when you edit an
+> existing payment method or billing details in billing settings.
+
+Add a VAT number or tax ID when you
+[set up a new plan](/manuals/subscription/manage.md#set-up-a-new-plan).
